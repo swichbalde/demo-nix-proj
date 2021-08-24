@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://172.17.0.2:5432/demodb
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: hunter2
+  jpa:
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    defer-datasource-initialization: true
