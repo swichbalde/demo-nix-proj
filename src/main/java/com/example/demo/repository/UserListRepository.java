@@ -7,4 +7,5 @@ import org.springframework.stereotype.Component;
 
 @Component
 public interface UserListRepository extends CrudRepository<UserListEntity, Long> {
+    UserListEntity findAllById(Long id);
 }

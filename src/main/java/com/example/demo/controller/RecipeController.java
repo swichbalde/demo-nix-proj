@@ -18,6 +18,4 @@ public class RecipeController {
             return ResponseEntity.badRequest().body("Error");
         }
     }
-
-
 }
