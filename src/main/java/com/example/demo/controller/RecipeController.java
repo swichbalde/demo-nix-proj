@@ -1,19 +1,56 @@
 package com.example.demo.controller;
 
+import com.example.demo.entity.RecipeEntity;
+import com.example.demo.exception.RecipeNotFoundException;
+import com.example.demo.service.RecipeService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/recipe")
 public class RecipeController {
 
-    @GetMapping("")
-    public ResponseEntity getRecipes() {
+    final
+    RecipeService recipeService;
+
+    public RecipeController(RecipeService recipeService) {
+        this.recipeService = recipeService;
+    }
+
+    @GetMapping("/random")
+    public ResponseEntity getRandomRecipe() {
         try {
-            return ResponseEntity.ok("Work");
+            return ResponseEntity.ok(recipeService.getRandomRecipe());
+        }catch (RecipeNotFoundException ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error");
+        }
+    }
+
+    @PostMapping("")
+    public ResponseEntity<String> postRecipe(@RequestBody RecipeEntity recipeEntity) {
+        try {
+            recipeService.saveRecipe(recipeEntity);
+            return ResponseEntity.ok("recipe created");
+        }catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error");
+        }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity getRandomRecipe(@PathVariable String id) {
+        try {
+            return ResponseEntity.ok(recipeService.getRecipeByIngredients(id));
+        }catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error");
+        }
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity getAllRecipes() {
+        try {
+            return ResponseEntity.ok(recipeService.getAllRecipeEntity());
         }catch (Exception e) {
             return ResponseEntity.badRequest().body("Error");
         }

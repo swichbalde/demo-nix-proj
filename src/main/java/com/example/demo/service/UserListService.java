@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.UserListEntity;
+import com.example.demo.exception.RecommendAndBanListException;
 import com.example.demo.exception.RecommendListIsBlankException;
 import com.example.demo.exception.UserListNotFoundException;
 import com.example.demo.repository.UserListRepository;
@@ -15,9 +16,11 @@ public class UserListService {
         this.userListRepository = userListRepository;
     }
 
-    public void saveUserList(UserListEntity userList) throws RecommendListIsBlankException {
+    public void saveUserList(UserListEntity userList) throws RecommendListIsBlankException, RecommendAndBanListException {
         if (userList.getRecommend_list().isBlank())
             throw new RecommendListIsBlankException("Recommend list cannot be blank");
+        if (userList.getRecommend_list().equals(userList.getBan_list()))
+            throw new RecommendAndBanListException("Recommend list cannot equals ban list");
         userListRepository.save(userList);
     }
 

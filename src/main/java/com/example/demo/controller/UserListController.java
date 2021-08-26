@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.UserListEntity;
+import com.example.demo.exception.RecommendAndBanListException;
 import com.example.demo.exception.RecommendListIsBlankException;
 import com.example.demo.exception.UserListNotFoundException;
 import com.example.demo.service.UserListService;
@@ -22,14 +23,14 @@ public class UserListController {
         try {
             userListService.saveUserList(userListEntity);
             return ResponseEntity.ok("user_list created");
-        }catch (RecommendListIsBlankException ex) {
+        } catch (RecommendListIsBlankException | RecommendAndBanListException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error");
         }
     }
 
-    @PatchMapping("/{id}")//think about model
+    @PatchMapping("/{id}")
     public ResponseEntity<String> updateUserList(@PathVariable String id, @RequestBody UserListEntity userListEntity) {
         try {
             userListService.updateUserListById(Long.valueOf(id), userListEntity);

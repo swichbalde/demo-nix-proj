@@ -1,9 +1,6 @@
 package com.example.demo.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class RecipeEntity {
@@ -12,9 +9,11 @@ public class RecipeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
     private String recipe_name;
+
     private String ingredients;
-    private Long cook_time;
+    private Integer cook_time;
     private Integer calories;
     private Integer cost;
 
@@ -45,11 +44,11 @@ public class RecipeEntity {
         this.ingredients = ingredients;
     }
 
-    public Long getCook_time() {
+    public Integer getCook_time() {
         return cook_time;
     }
 
-    public void setCook_time(Long cook_time) {
+    public void setCook_time(Integer cook_time) {
         this.cook_time = cook_time;
     }
 
