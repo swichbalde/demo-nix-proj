@@ -4,7 +4,6 @@ import com.example.demo.entity.model.UserLoginModel;
 import com.example.demo.entity.user.User;
 import com.example.demo.security.jwt.JwtTokenProvider;
 import com.example.demo.service.UserService;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.naming.AuthenticationException;
 import java.util.HashMap;
 import java.util.Map;
 

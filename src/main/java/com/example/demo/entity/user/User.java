@@ -13,6 +13,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @RequiredArgsConstructor
+@ToString
 @Table(name = "users")
 public class User {
 
