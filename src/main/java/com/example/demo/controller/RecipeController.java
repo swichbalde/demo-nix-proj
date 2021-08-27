@@ -28,7 +28,7 @@ public class RecipeController {
         }
     }
 
-    @PostMapping("")
+    @PostMapping("/admin/one")
     public ResponseEntity<String> postRecipe(@RequestBody RecipeEntity recipeEntity) {
         try {
             recipeService.saveRecipe(recipeEntity);
@@ -47,7 +47,7 @@ public class RecipeController {
         }
     }
 
-    @GetMapping("/all")
+    @GetMapping("/admin/all")
     public ResponseEntity getAllRecipes() {
         try {
             return ResponseEntity.ok(recipeService.getAllRecipeEntity());
