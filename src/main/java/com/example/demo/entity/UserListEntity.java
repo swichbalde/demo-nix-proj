@@ -1,11 +1,17 @@
 package com.example.demo.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.example.demo.entity.user.User;
+import lombok.*;
+import org.hibernate.Hibernate;
+
+import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 public class UserListEntity {
 
     @Id
@@ -16,38 +22,21 @@ public class UserListEntity {
     private String ban_list;
     private String filter;
 
-    public UserListEntity() {
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        UserListEntity that = (UserListEntity) o;
+
+        return Objects.equals(id, that.id);
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getRecommend_list() {
-        return recommend_list;
-    }
-
-    public void setRecommend_list(String recommend_list) {
-        this.recommend_list = recommend_list;
-    }
-
-    public String getBan_list() {
-        return ban_list;
-    }
-
-    public void setBan_list(String ban_list) {
-        this.ban_list = ban_list;
-    }
-
-    public String getFilter() {
-        return filter;
-    }
-
-    public void setFilter(String filter) {
-        this.filter = filter;
+    @Override
+    public int hashCode() {
+        return 1067274218;
     }
 }

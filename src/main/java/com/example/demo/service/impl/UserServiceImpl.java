@@ -3,7 +3,6 @@ package com.example.demo.service.impl;
 import com.example.demo.entity.user.Role;
 import com.example.demo.entity.user.Status;
 import com.example.demo.entity.user.User;
-import com.example.demo.exception.RecipeListIsBlankException;
 import com.example.demo.exception.UserNotFoundException;
 import com.example.demo.repository.RoleRepository;
 import com.example.demo.repository.UserRepository;
@@ -12,7 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -23,7 +24,9 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository,
+                           RoleRepository roleRepository,
+                           BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
@@ -38,6 +41,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(roleList);
         user.setStatus(Status.ACTIVE);
+        user.setCreated(Date.from(Instant.now()));
 
         User regUser = userRepository.save(user);
 
@@ -53,8 +57,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findByLogin(String login) {
+    public User findByLogin(String login) throws UserNotFoundException {
         User resultUser = userRepository.findByLogin(login);
+        if (resultUser == null) {
+            log.warn("IN findByLogin user not found by login: {}", login);
+            throw new UserNotFoundException("User with login " + login + " dont found");
+        }
+        if (resultUser.getStatus() == Status.INACTIVE) {
+            log.warn("IN findByLogin user was deleted by login: {}", login);
+            throw new UserNotFoundException("User with login " + login + " was deleted");
+        }
         log.info("IN findByLogin: found user by id : {}", resultUser.getId());
         return resultUser;
     }
@@ -64,8 +76,13 @@ public class UserServiceImpl implements UserService {
         User result = userRepository.findById(id).orElse(null);
 
         if (result == null) {
-            log.warn("IN findById - no user found by id: {}", id);
+            log.warn("IN findById no user found by id: {}", id);
             throw new UserNotFoundException("user with id:" + id + " not found");
+        }
+
+        if (result.getStatus() == Status.INACTIVE) {
+            log.warn("IN findByLogin user was deleted by id: {}", id);
+            throw new UserNotFoundException("User with id " + id + " was deleted");
         }
 
         log.info("IN findById - user: {} found by id: {}", result, id);
@@ -73,8 +90,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteById(Long id) {
-        userRepository.deleteById(id);
-        log.info("IN deleteById: deleted with id: {}", id);
+    public User deleteById(Long id) throws UserNotFoundException {
+        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found by id: " + id));
+        user.setStatus(Status.INACTIVE);
+        userRepository.save(user);
+        log.info("IN deleteById: deleted with id: {}, user: {}", id, user);
+        return user;
     }
 }

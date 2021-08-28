@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.model.WeightModel;
-import com.example.demo.service.WeightService;
+import com.example.demo.service.impl.WeightServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/weight")
 public class WeightController {
 
-    private final WeightService weightService;
+    private final WeightServiceImpl weightService;
 
-    public WeightController(WeightService weightService) {
+    public WeightController(WeightServiceImpl weightService) {
         this.weightService = weightService;
     }
 

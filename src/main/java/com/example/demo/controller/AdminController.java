@@ -29,4 +29,15 @@ public class AdminController {
         UserModel userModel = UserModel.fromUser(resultUser);
         return new ResponseEntity<>(userModel, HttpStatus.OK);
     }
+
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity inactiveUser(@PathVariable String id) {
+        try {
+            userService.deleteById(Long.valueOf(id));
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

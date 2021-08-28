@@ -2,7 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.RecipeEntity;
 import com.example.demo.exception.RecipeNotFoundException;
-import com.example.demo.service.RecipeService;
+import com.example.demo.service.impl.RecipeServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.*;
 public class RecipeController {
 
     final
-    RecipeService recipeService;
+    RecipeServiceImpl recipeService;
 
-    public RecipeController(RecipeService recipeService) {
+    public RecipeController(RecipeServiceImpl recipeService) {
         this.recipeService = recipeService;
     }
 

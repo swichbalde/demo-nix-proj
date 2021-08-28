@@ -12,9 +12,9 @@ public interface UserService {
 
     List<User> getAll();
 
-    User findByLogin(String login);
+    User findByLogin(String login) throws UserNotFoundException;
 
     User findById(Long id) throws UserNotFoundException;
 
-    void deleteById(Long id);
+    User deleteById(Long id) throws UserNotFoundException;
 }

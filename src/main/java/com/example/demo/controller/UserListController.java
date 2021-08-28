@@ -4,7 +4,7 @@ import com.example.demo.entity.UserListEntity;
 import com.example.demo.exception.RecommendAndBanListException;
 import com.example.demo.exception.RecommendListIsBlankException;
 import com.example.demo.exception.UserListNotFoundException;
-import com.example.demo.service.UserListService;
+import com.example.demo.service.impl.UserListServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,16 +12,16 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/list")
 public class UserListController {
 
-    private final UserListService userListService;
+    private final UserListServiceImpl userListService;
 
-    public UserListController(UserListService userListService) {
+    public UserListController(UserListServiceImpl userListService) {
         this.userListService = userListService;
     }
 
-    @PostMapping("/recommend")
-    public ResponseEntity<String> postUserList(@RequestBody UserListEntity userListEntity) {
+    @PostMapping("/recommend/{id}")
+    public ResponseEntity<String> postUserList(@RequestBody UserListEntity userListEntity, @PathVariable Long id) {
         try {
-            userListService.saveUserList(userListEntity);
+            userListService.saveUserList(userListEntity, id);
             return ResponseEntity.ok("user_list created");
         } catch (RecommendListIsBlankException | RecommendAndBanListException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());

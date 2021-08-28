@@ -1,6 +1,9 @@
 package com.example.demo.entity.user;
 
-import lombok.*;
+import com.example.demo.entity.UserListEntity;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.hibernate.Hibernate;
 import org.springframework.data.annotation.CreatedDate;
 
@@ -13,7 +16,6 @@ import java.util.Objects;
 @Getter
 @Setter
 @RequiredArgsConstructor
-@ToString
 @Table(name = "users")
 public class User {
 
@@ -29,6 +31,9 @@ public class User {
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
     private List<Role> roles;
+
+    @OneToMany(mappedBy = "id")
+    private List<UserListEntity> userList;
 
     @CreatedDate
     private Date created;

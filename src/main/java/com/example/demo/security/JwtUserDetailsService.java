@@ -1,11 +1,11 @@
 package com.example.demo.security;
 
 import com.example.demo.entity.user.User;
+import com.example.demo.exception.UserNotFoundException;
 import com.example.demo.security.jwt.JwtUser;
 import com.example.demo.security.jwt.JwtUserFactory;
 import com.example.demo.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,7 +23,12 @@ public class JwtUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        User user = userService.findByLogin(login);
+        User user;
+        try {
+            user = userService.findByLogin(login);
+        } catch (UserNotFoundException e) {
+            throw new UsernameNotFoundException("User with this login: " + login + " not found");
+        }
 
         if (user == null) {
             throw new UsernameNotFoundException("User with this login: " + login + " not found");
