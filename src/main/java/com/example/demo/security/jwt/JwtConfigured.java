@@ -12,7 +12,7 @@ public class JwtConfigured extends SecurityConfigurerAdapter<DefaultSecurityFilt
     public JwtConfigured(JwtTokenProvider jwtTokenProvider) {
         this.jwtTokenProvider = jwtTokenProvider;
     }
-//mb 1
+
     @Override
     public void configure(HttpSecurity httpSecurity) {
         JwtTokenFilter jwtTokenFilter = new JwtTokenFilter(jwtTokenProvider);

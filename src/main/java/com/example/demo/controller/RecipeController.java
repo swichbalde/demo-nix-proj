@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.RecipeEntity;
-import com.example.demo.exception.RecipeNotFoundException;
+import com.example.demo.exception.recipe.RecipeNotFoundException;
 import com.example.demo.service.impl.RecipeServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

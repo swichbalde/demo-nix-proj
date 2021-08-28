@@ -2,7 +2,7 @@ package com.example.demo.service.impl;
 
 import com.example.demo.entity.SaveWeightEntity;
 import com.example.demo.entity.model.WeightModel;
-import com.example.demo.exception.UserNotFoundException;
+import com.example.demo.exception.user.UserNotFoundException;
 import com.example.demo.repository.WeightRepository;
 import com.example.demo.service.WeightService;
 import lombok.extern.slf4j.Slf4j;

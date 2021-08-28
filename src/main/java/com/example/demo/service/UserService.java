@@ -1,15 +1,15 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.user.User;
-import com.example.demo.exception.DuplicateUserLogin;
-import com.example.demo.exception.RecipeListIsBlankException;
-import com.example.demo.exception.UserNotFoundException;
+import com.example.demo.exception.user.DuplicateUserLogin;
+import com.example.demo.exception.user.UserNotFoundException;
+import com.example.demo.exception.user.UserPasswordSmall;
 
 import java.util.List;
 
 public interface UserService {
 
-    User registration(User user) throws DuplicateUserLogin;
+    User registration(User user) throws DuplicateUserLogin, UserPasswordSmall;
 
     List<User> getAll();
 

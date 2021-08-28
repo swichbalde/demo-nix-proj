@@ -2,8 +2,9 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.model.UserLoginModel;
 import com.example.demo.entity.user.User;
-import com.example.demo.exception.DuplicateUserLogin;
-import com.example.demo.exception.UserNotFoundException;
+import com.example.demo.exception.user.DuplicateUserLogin;
+import com.example.demo.exception.user.UserNotFoundException;
+import com.example.demo.exception.user.UserPasswordSmall;
 import com.example.demo.security.jwt.JwtTokenProvider;
 import com.example.demo.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -43,6 +44,8 @@ public class AuthController {
             user = userService.findByLogin(username);
         } catch (UserNotFoundException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception ex) {
+            return ResponseEntity.badRequest().body("Unknown error");
         }
 
         String token = jwtTokenProvider.createToken(username, user.getRoles());
@@ -63,8 +66,10 @@ public class AuthController {
         User registrationUser;
         try {
             registrationUser = userService.registration(user);
-        } catch (DuplicateUserLogin e) {
+        } catch (UserPasswordSmall | DuplicateUserLogin e) {
             return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception ex) {
+            return ResponseEntity.badRequest().body("Unknown error");
         }
 
         String token = jwtTokenProvider.createToken(username, registrationUser.getRoles());

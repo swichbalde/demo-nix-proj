@@ -1,7 +1,7 @@
 package com.example.demo.security;
 
 import com.example.demo.entity.user.User;
-import com.example.demo.exception.UserNotFoundException;
+import com.example.demo.exception.user.UserNotFoundException;
 import com.example.demo.security.jwt.JwtUser;
 import com.example.demo.security.jwt.JwtUserFactory;
 import com.example.demo.service.UserService;

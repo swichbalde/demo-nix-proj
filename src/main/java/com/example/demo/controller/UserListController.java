@@ -1,9 +1,9 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.UserListEntity;
-import com.example.demo.exception.RecommendAndBanListException;
-import com.example.demo.exception.RecommendListIsBlankException;
-import com.example.demo.exception.UserListNotFoundException;
+import com.example.demo.exception.list.RecommendAndBanListException;
+import com.example.demo.exception.list.RecommendListIsBlankException;
+import com.example.demo.exception.list.UserListNotFoundException;
 import com.example.demo.service.impl.UserListServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

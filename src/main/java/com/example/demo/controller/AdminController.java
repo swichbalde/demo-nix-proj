@@ -2,7 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.model.UserModel;
 import com.example.demo.entity.user.User;
-import com.example.demo.exception.UserNotFoundException;
+import com.example.demo.exception.user.UserNotFoundException;
 import com.example.demo.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +36,8 @@ public class AdminController {
             userService.deleteById(Long.valueOf(id));
         } catch (UserNotFoundException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception ex) {
+            return ResponseEntity.badRequest().body("Unknown error");
         }
 
         return new ResponseEntity<>(HttpStatus.OK);

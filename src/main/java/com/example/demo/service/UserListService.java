@@ -1,10 +1,10 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.UserListEntity;
-import com.example.demo.exception.RecommendAndBanListException;
-import com.example.demo.exception.RecommendListIsBlankException;
-import com.example.demo.exception.UserListNotFoundException;
-import com.example.demo.exception.UserNotFoundException;
+import com.example.demo.exception.list.RecommendAndBanListException;
+import com.example.demo.exception.list.RecommendListIsBlankException;
+import com.example.demo.exception.list.UserListNotFoundException;
+import com.example.demo.exception.user.UserNotFoundException;
 
 public interface UserListService {
     void saveUserList(UserListEntity userList, Long id) throws RecommendListIsBlankException,

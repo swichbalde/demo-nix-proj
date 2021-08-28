@@ -2,9 +2,9 @@ package com.example.demo.service.impl;
 
 import com.example.demo.entity.RecipeEntity;
 import com.example.demo.entity.UserListEntity;
-import com.example.demo.exception.RecipeListIsBlankException;
-import com.example.demo.exception.RecipeNotFoundException;
-import com.example.demo.exception.UserNotFoundException;
+import com.example.demo.exception.list.RecipeListIsBlankException;
+import com.example.demo.exception.recipe.RecipeNotFoundException;
+import com.example.demo.exception.user.UserNotFoundException;
 import com.example.demo.repository.RecipeRepository;
 import com.example.demo.service.RecipeService;
 import com.example.demo.service.UserService;
