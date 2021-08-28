@@ -3,6 +3,7 @@ package com.example.demo.service.impl;
 import com.example.demo.entity.user.Role;
 import com.example.demo.entity.user.Status;
 import com.example.demo.entity.user.User;
+import com.example.demo.exception.DuplicateUserLogin;
 import com.example.demo.exception.UserNotFoundException;
 import com.example.demo.repository.RoleRepository;
 import com.example.demo.repository.UserRepository;
@@ -33,7 +34,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User registration(User user) {
+    public User registration(User user) throws DuplicateUserLogin {
+        if (userRepository.existsUserByLogin(user.getLogin())) {
+            log.warn("User with login {} exist", user.getLogin());
+            throw new DuplicateUserLogin("User with login:" + user.getLogin() + " exist");
+        }
+
         Role role = roleRepository.findByName("ROLE_USER");
         List<Role> roleList = new ArrayList<>();
 

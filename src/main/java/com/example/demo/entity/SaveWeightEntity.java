@@ -1,12 +1,20 @@
 package com.example.demo.entity;
 
+import lombok.*;
+import org.hibernate.Hibernate;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.time.Instant;
+import java.util.Objects;
 
 @Entity
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 public class SaveWeightEntity {
 
     @Id
@@ -19,9 +27,6 @@ public class SaveWeightEntity {
     private Long difference;
     private float bmi;
 
-    public SaveWeightEntity() {
-    }
-
     public SaveWeightEntity(Long currentWeight, Long newWeight, Instant firstCalc, Long difference, float bmi) {
         this.currentWeight = currentWeight;
         this.newWeight = newWeight;
@@ -30,51 +35,17 @@ public class SaveWeightEntity {
         this.bmi = bmi;
     }
 
-    public Long getId() {
-        return id;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        SaveWeightEntity that = (SaveWeightEntity) o;
+
+        return Objects.equals(id, that.id);
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getCurrentWeight() {
-        return currentWeight;
-    }
-
-    public void setCurrentWeight(Long currentWeight) {
-        this.currentWeight = currentWeight;
-    }
-
-    public Long getNewWeight() {
-        return newWeight;
-    }
-
-    public void setNewWeight(Long newWeight) {
-        this.newWeight = newWeight;
-    }
-
-    public Instant getFirstCalc() {
-        return firstCalc;
-    }
-
-    public void setFirstCalc(Instant firstCalc) {
-        this.firstCalc = firstCalc;
-    }
-
-    public Long getDifference() {
-        return difference;
-    }
-
-    public void setDifference(Long difference) {
-        this.difference = difference;
-    }
-
-    public float getBmi() {
-        return bmi;
-    }
-
-    public void setBmi(float bmi) {
-        this.bmi = bmi;
+    @Override
+    public int hashCode() {
+        return 1456384570;
     }
 }

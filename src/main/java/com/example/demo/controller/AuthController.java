@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.model.UserLoginModel;
 import com.example.demo.entity.user.User;
+import com.example.demo.exception.DuplicateUserLogin;
 import com.example.demo.exception.UserNotFoundException;
 import com.example.demo.security.jwt.JwtTokenProvider;
 import com.example.demo.service.UserService;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,12 +55,17 @@ public class AuthController {
     }
 
     @PostMapping("/registration")
-    public ResponseEntity<Map<String, String>> registration(@RequestBody UserLoginModel userLoginModel) {
+    public ResponseEntity registration(@Valid @RequestBody UserLoginModel userLoginModel) {
         String username = userLoginModel.getUsername();
         User user = new User();
         user.setLogin(username);
         user.setPassword(userLoginModel.getPassword());
-        User registrationUser = userService.registration(user);
+        User registrationUser;
+        try {
+            registrationUser = userService.registration(user);
+        } catch (DuplicateUserLogin e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
 
         String token = jwtTokenProvider.createToken(username, registrationUser.getRoles());
 
