@@ -66,6 +66,9 @@ public class AuthController {
         User registrationUser;
         try {
             registrationUser = userService.registration(user);
+            if (registrationUser.getRoles().get(0) == null) {
+                registrationUser.setRoles(userLoginModel.getRoles());
+            }
         } catch (UserPasswordSmall | DuplicateUserLogin e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception ex) {

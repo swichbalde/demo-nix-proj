@@ -87,12 +87,7 @@ public class JwtTokenProvider {
 
     private List<String> getRoleNames(List<Role> userRoles) {
         List<String> result = new ArrayList<>();
-        userRoles.clear();
-        Role role = new Role();
-        role.setName("ROLE_USER");
-        userRoles.add(role);
-        role.setName("ROLE_ADMIN");
-        userRoles.add(role);
+        
         userRoles.forEach(r -> result.add(r.getName()));
 
         return result;
