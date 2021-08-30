@@ -25,17 +25,4 @@ public class RecipeEntity {
     private Integer calories;
     private Integer cost;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        RecipeEntity that = (RecipeEntity) o;
-
-        return Objects.equals(id, that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return 738380931;
-    }
 }

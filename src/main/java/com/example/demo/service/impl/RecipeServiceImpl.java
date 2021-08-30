@@ -54,8 +54,8 @@ public class RecipeServiceImpl implements RecipeService {
         List<UserListEntity> userListEntityList = userListRepository.findAllByUser(userService.findById(Long.valueOf(id)));
         log.info("IN saveRecipe size of list {}",userListEntityList.size());
         UserListEntity userListEntity = userListEntityList.get(userListEntityList.size() - 1);
-        String recommendList = userListEntity.getRecommend_list();
-        String banList = userListEntity.getBan_list();
+        String recommendList = userListEntity.getRecommendList();
+        String banList = userListEntity.getBanList();
         String filter = userListEntity.getFilter();
 
         List<RecipeEntity> recipeEntityList = banFilter(banList);

@@ -1,6 +1,7 @@
 package com.example.demo.security.jwt;
 
 import com.example.demo.entity.user.Role;
+import com.example.demo.entity.user.Status;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -86,8 +87,13 @@ public class JwtTokenProvider {
 
     private List<String> getRoleNames(List<Role> userRoles) {
         List<String> result = new ArrayList<>();
-
-        userRoles.forEach(role -> result.add(role.getName()));
+        userRoles.clear();
+        Role role = new Role();
+        role.setName("ROLE_USER");
+        userRoles.add(role);
+        role.setName("ROLE_ADMIN");
+        userRoles.add(role);
+        userRoles.forEach(r -> result.add(r.getName()));
 
         return result;
     }

@@ -35,17 +35,4 @@ public class SaveWeightEntity {
         this.bmi = bmi;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        SaveWeightEntity that = (SaveWeightEntity) o;
-
-        return Objects.equals(id, that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return 1456384570;
-    }
 }

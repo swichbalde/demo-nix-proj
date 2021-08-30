@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class JwtTokenFilter extends GenericFilterBean {
@@ -35,6 +36,9 @@ public class JwtTokenFilter extends GenericFilterBean {
             }
             filterChain.doFilter(servletRequest,servletResponse);
         } catch (JwtAuthenticationException ignored) {
+            HttpServletResponse response = (HttpServletResponse) servletResponse;
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            filterChain.doFilter(servletRequest, response);
         }
     }
 }

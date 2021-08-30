@@ -27,17 +27,4 @@ public class Role {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Role role = (Role) o;
-
-        return Objects.equals(id, role.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return 1179619963;
-    }
 }

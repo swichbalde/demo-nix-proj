@@ -24,9 +24,9 @@ public class UserListServiceImpl implements UserListService {
 
     public void saveUserList(UserListEntity userList, Long id) throws RecommendListIsBlankException,
             RecommendAndBanListException, UserNotFoundException {
-        if (userList.getRecommend_list().isBlank())
+        if (userList.getRecommendList().isBlank())
             throw new RecommendListIsBlankException("Recommend list cannot be blank");
-        if (userList.getRecommend_list().equals(userList.getBan_list()))
+        if (userList.getRecommendList().equals(userList.getBanList()))
             throw new RecommendAndBanListException("Recommend list cannot equals ban list");
         User user = userService.findById(id);
         userList.setUser(user);
@@ -44,13 +44,13 @@ public class UserListServiceImpl implements UserListService {
     public void updateUserListById(Long id, UserListEntity userListEntity) throws UserListNotFoundException, RecommendListIsBlankException {
         UserListEntity currentEntity = userListRepository.findAllById(id);
         if (currentEntity == null) throw new UserListNotFoundException("user list not found by this id : " + id);
-        if (userListEntity.getRecommend_list().isBlank()) throw new RecommendListIsBlankException("Recommend list cannot be blank");
+        if (userListEntity.getRecommendList().isBlank()) throw new RecommendListIsBlankException("Recommend list cannot be blank");
 
-        if (!userListEntity.getRecommend_list().isBlank())
-            currentEntity.setRecommend_list(userListEntity.getRecommend_list());
+        if (!userListEntity.getRecommendList().isBlank())
+            currentEntity.setRecommendList(userListEntity.getRecommendList());
 
-        if (!userListEntity.getBan_list().isBlank())
-            currentEntity.setBan_list(userListEntity.getBan_list());
+        if (!userListEntity.getBanList().isBlank())
+            currentEntity.setBanList(userListEntity.getBanList());
 
         if (!userListEntity.getFilter().isBlank())
             currentEntity.setFilter(userListEntity.getFilter());
