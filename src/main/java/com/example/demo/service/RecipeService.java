@@ -11,9 +11,10 @@ public interface RecipeService {
 
     RecipeEntity getRandomRecipe() throws RecipeNotFoundException;
 
-    void saveRecipe(RecipeEntity recipeEntity);
+    RecipeEntity saveRecipe(RecipeEntity recipeEntity);
 
-    List<RecipeEntity> getRecipeByIngredients(String id) throws UserNotFoundException;
+    List<RecipeEntity> getRecipeByIngredients(String id) throws RecipeNotFoundException, UserNotFoundException;
 
     List<RecipeEntity> getAllRecipeEntity() throws RecipeListIsBlankException;
+
 }

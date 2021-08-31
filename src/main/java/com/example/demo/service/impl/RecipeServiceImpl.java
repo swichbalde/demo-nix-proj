@@ -45,12 +45,13 @@ public class RecipeServiceImpl implements RecipeService {
         throw new RecipeNotFoundException("Recipe with this id: " + recipeId + "not found");
     }
 
-    public void saveRecipe(RecipeEntity recipeEntity) {
-        recipeRepository.save(recipeEntity);
+    public RecipeEntity saveRecipe(RecipeEntity recipeEntity) {
+        RecipeEntity save = recipeRepository.save(recipeEntity);
         log.info("IN saveRecipe recipeEntity successfully saved");
+        return save;
     }
 
-    public List<RecipeEntity> getRecipeByIngredients(String id) throws UserNotFoundException {
+    public List<RecipeEntity> getRecipeByIngredients(String id) throws RecipeNotFoundException, UserNotFoundException {
         List<UserListEntity> userListEntityList = userListRepository.findAllByUser(userService.findById(Long.valueOf(id)));
         log.info("IN saveRecipe size of list {}",userListEntityList.size());
         UserListEntity userListEntity = userListEntityList.get(userListEntityList.size() - 1);
@@ -173,4 +174,5 @@ public class RecipeServiceImpl implements RecipeService {
         log.info("Recipes are successfully found");
         return recipeEntities;
     }
+
 }
