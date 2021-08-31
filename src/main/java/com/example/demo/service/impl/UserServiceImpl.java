@@ -44,7 +44,32 @@ public class UserServiceImpl implements UserService {
             throw new DuplicateUserLogin("User with login:" + user.getLogin() + " exist");
         }
 
-        Role role = roleRepository.findByName("ROLE_USER");
+        Role role = roleRepository.findByName("ROLE_ADMIN");
+        List<Role> roleList = new ArrayList<>();
+
+        roleList.add(role);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRoles(roleList);
+        user.setStatus(Status.ACTIVE);
+        user.setCreated(Date.from(Instant.now()));
+
+        User regUser = userRepository.save(user);
+
+        log.info("IN registration: user by id : {} successfully registered", regUser.getId());
+        return regUser;
+    }
+
+    @Override
+    public User registrationAdmin(User user) throws DuplicateUserLogin, UserPasswordSmall {
+        if (user.getPassword().length() < 8) {
+            throw new UserPasswordSmall("Password cannot be less than 8 symbols");
+        }
+        if (userRepository.existsUserByLogin(user.getLogin())) {
+            log.warn("User with login {} exist", user.getLogin());
+            throw new DuplicateUserLogin("User with login:" + user.getLogin() + " exist");
+        }
+
+        Role role = roleRepository.findByName("ROLE_ADMIN");
         List<Role> roleList = new ArrayList<>();
 
         roleList.add(role);
@@ -63,7 +88,7 @@ public class UserServiceImpl implements UserService {
     public List<User> getAll() {
         List<User> userList = userRepository.findAll();
         log.info("IN getAll: {} users found", userList.size());
-        return null;
+        return userList;
     }
 
     @Override
@@ -77,7 +102,7 @@ public class UserServiceImpl implements UserService {
             log.warn("IN findByLogin user was deleted by login: {}", login);
             throw new UserNotFoundException("User with login " + login + " was deleted");
         }
-        log.info("IN findByLogin: found user by id : {}", resultUser.getId());
+        log.info("IN findByLogin: found user by login: {} with id : {}", login, resultUser.getId());
         return resultUser;
     }
 

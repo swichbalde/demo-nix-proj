@@ -11,6 +11,8 @@ public interface UserService {
 
     User registration(User user) throws DuplicateUserLogin, UserPasswordSmall;
 
+    User registrationAdmin(User user) throws DuplicateUserLogin, UserPasswordSmall;
+
     List<User> getAll();
 
     User findByLogin(String login) throws UserNotFoundException;

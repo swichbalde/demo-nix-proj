@@ -73,7 +73,7 @@ public class RecipeServiceImpl implements RecipeService {
         switch (filter) {
             case "cook_time":
                 for (RecipeEntity recipeEntity : recipeEntityList) {
-                    mapValues.put(recipeEntity.getId(), Math.toIntExact(recipeEntity.getCook_time()));
+                    mapValues.put(recipeEntity.getId(), Math.toIntExact(recipeEntity.getCookTime()));
                 }
                 break;
             case "calories":

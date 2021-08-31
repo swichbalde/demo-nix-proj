@@ -18,10 +18,10 @@ public class RecipeEntity {
     private Long id;
 
     @Column(unique = true)
-    private String recipe_name;
+    private String recipeName;
 
     private String ingredients;
-    private Integer cook_time;
+    private Integer cookTime;
     private Integer calories;
     private Integer cost;
 

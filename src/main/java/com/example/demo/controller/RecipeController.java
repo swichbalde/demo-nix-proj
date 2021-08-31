@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/recipe")
+@RequestMapping("/recipes")
 public class RecipeController {
 
     final
@@ -39,7 +39,7 @@ public class RecipeController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity getRandomRecipe(@PathVariable String id) {
+    public ResponseEntity getRecipeById(@PathVariable String id) {
         try {
             return ResponseEntity.ok(recipeService.getRecipeByIngredients(id));
         }catch (Exception e) {
