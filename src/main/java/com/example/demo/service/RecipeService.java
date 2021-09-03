@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.entity.RecipeEntity;
 import com.example.demo.exception.list.RecipeListIsBlankException;
+import com.example.demo.exception.list.UserListNotFoundException;
 import com.example.demo.exception.recipe.RecipeNotFoundException;
 import com.example.demo.exception.user.UserNotFoundException;
 
@@ -13,7 +14,7 @@ public interface RecipeService {
 
     RecipeEntity saveRecipe(RecipeEntity recipeEntity);
 
-    List<RecipeEntity> getRecipeByIngredients(String id) throws RecipeNotFoundException, UserNotFoundException;
+    List<RecipeEntity> getRecipeByIngredients(String id) throws RecipeNotFoundException, UserNotFoundException, UserListNotFoundException;
 
     List<RecipeEntity> getAllRecipeEntity() throws RecipeListIsBlankException;
 

@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.RecipeEntity;
+import com.example.demo.exception.list.UserListNotFoundException;
 import com.example.demo.exception.recipe.RecipeNotFoundException;
 import com.example.demo.service.impl.RecipeServiceImpl;
 import org.springframework.http.ResponseEntity;
@@ -42,8 +43,10 @@ public class RecipeController {
     public ResponseEntity getRecipeById(@PathVariable String id) {
         try {
             return ResponseEntity.ok(recipeService.getRecipeByIngredients(id));
-        }catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error");
+        } catch (UserListNotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception ex) {
+            return ResponseEntity.badRequest().body("Unknown error");
         }
     }
 

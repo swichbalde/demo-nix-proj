@@ -1,11 +1,12 @@
 package com.example.demo.entity;
 
 import com.example.demo.entity.user.User;
-import lombok.*;
-import org.hibernate.Hibernate;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @Entity
 @Getter
@@ -25,4 +26,12 @@ public class UserListEntity {
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
+
+    public UserListEntity(Long id, String recommendList, String banList, String filter, User user) {
+        this.id = id;
+        this.recommendList = recommendList;
+        this.banList = banList;
+        this.filter = filter;
+        this.user = user;
+    }
 }

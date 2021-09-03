@@ -5,6 +5,15 @@ public class WeightModel {
     private Long newWeight;
     private Long height;
 
+    public WeightModel() {
+    }
+
+    public WeightModel(Long currentWeight, Long newWeight, Long height) {
+        this.currentWeight = currentWeight;
+        this.newWeight = newWeight;
+        this.height = height;
+    }
+
     public Long getCurrentWeight() {
         return currentWeight;
     }

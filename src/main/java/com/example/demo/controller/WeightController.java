@@ -28,7 +28,7 @@ public class WeightController {
     @GetMapping("/{id}")
     public ResponseEntity getUser(@PathVariable String id) {
         try {
-            return ResponseEntity.ok(weightService.getUserById(Long.valueOf(id)));
+            return ResponseEntity.ok(weightService.getWeightById(Long.valueOf(id)));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error");
         }

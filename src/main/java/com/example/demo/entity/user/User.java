@@ -4,16 +4,11 @@ import com.example.demo.entity.UserListEntity;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.hibernate.Hibernate;
-import org.hibernate.annotations.Cascade;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.web.bind.annotation.DeleteMapping;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Getter
@@ -44,4 +39,9 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    public User(Long id, String login, String password) {
+        this.id = id;
+        this.login = login;
+        this.password = password;
+    }
 }

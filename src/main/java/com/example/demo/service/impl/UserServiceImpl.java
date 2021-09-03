@@ -44,19 +44,8 @@ public class UserServiceImpl implements UserService {
             throw new DuplicateUserLogin("User with login:" + user.getLogin() + " exist");
         }
 
-        Role role = roleRepository.findByName("ROLE_ADMIN");
-        List<Role> roleList = new ArrayList<>();
-
-        roleList.add(role);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRoles(roleList);
-        user.setStatus(Status.ACTIVE);
-        user.setCreated(Date.from(Instant.now()));
-
-        User regUser = userRepository.save(user);
-
-        log.info("IN registration: user by id : {} successfully registered", regUser.getId());
-        return regUser;
+        Role role = roleRepository.findByName("ROLE_USER");
+        return regUser(user, role);
     }
 
     @Override
@@ -70,6 +59,10 @@ public class UserServiceImpl implements UserService {
         }
 
         Role role = roleRepository.findByName("ROLE_ADMIN");
+        return regUser(user, role);
+    }
+
+    private User regUser(User user, Role role) {
         List<Role> roleList = new ArrayList<>();
 
         roleList.add(role);
@@ -125,11 +118,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User deleteById(Long id) throws UserNotFoundException {
+    public void deleteById(Long id) throws UserNotFoundException {
         User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found by id: " + id));
         user.setStatus(Status.INACTIVE);
         userRepository.save(user);
         log.info("IN deleteById: deleted with id: {}, user: {}", id, user);
-        return user;
     }
 }

@@ -9,8 +9,12 @@ import com.example.demo.exception.user.UserNotFoundException;
 import com.example.demo.repository.UserListRepository;
 import com.example.demo.service.UserListService;
 import com.example.demo.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
+@Slf4j
 @Service
 public class UserListServiceImpl implements UserListService {
 
@@ -22,29 +26,41 @@ public class UserListServiceImpl implements UserListService {
         this.userService = userService;
     }
 
-    public void saveUserList(UserListEntity userList, Long id) throws RecommendListIsBlankException,
+    public UserListEntity saveUserList(UserListEntity userList, Long userId) throws RecommendListIsBlankException,
             RecommendAndBanListException, UserNotFoundException {
-        if (userList.getRecommendList().isBlank())
+        if (userList.getRecommendList().isBlank()) {
+            log.warn("Recommend list cannot be blank");
             throw new RecommendListIsBlankException("Recommend list cannot be blank");
-        if (userList.getRecommendList().equals(userList.getBanList()))
+        }
+        if (userList.getRecommendList().equals(userList.getBanList())) {
+            log.warn("Recommend list cannot be equals to ban list");
             throw new RecommendAndBanListException("Recommend list cannot equals ban list");
-        User user = userService.findById(id);
+        }
+        User user = userService.findById(userId);
         userList.setUser(user);
         userListRepository.save(userList);
+        return userList;
     }
 
     public UserListEntity getUserListById(Long id) throws UserListNotFoundException {
-        UserListEntity currentEntity = userListRepository.findAllById(id);
-        if (currentEntity == null) {
-            throw new UserListNotFoundException("user list not found by this id : " + id);
-        }
-        return currentEntity;
+        Optional<UserListEntity> tmpUserList = userListRepository.findById(id);
+        return tmpUserList.orElseThrow(() -> {
+            log.warn("IN getUserListById user list not found by this id : {}", id);
+            return new UserListNotFoundException("user list not found by this id : " + id);
+        });
     }
 
     public void updateUserListById(Long id, UserListEntity userListEntity) throws UserListNotFoundException, RecommendListIsBlankException {
-        UserListEntity currentEntity = userListRepository.findAllById(id);
-        if (currentEntity == null) throw new UserListNotFoundException("user list not found by this id : " + id);
-        if (userListEntity.getRecommendList().isBlank()) throw new RecommendListIsBlankException("Recommend list cannot be blank");
+        Optional<UserListEntity> tmpUserList = userListRepository.findById(id);
+        UserListEntity currentEntity = tmpUserList.orElseThrow(() -> {
+            log.warn("IN updateUserListById user list not found by this id : {}", id);
+            return new UserListNotFoundException("user list not found by this id : " + id);
+        });
+
+        if (userListEntity.getRecommendList().isBlank()) {
+            log.warn("IN updateUserListById recommend list cannot be blank");
+            throw new RecommendListIsBlankException("Recommend list cannot be blank");
+        }
 
         if (!userListEntity.getRecommendList().isBlank())
             currentEntity.setRecommendList(userListEntity.getRecommendList());
@@ -57,3 +73,4 @@ public class UserListServiceImpl implements UserListService {
         userListRepository.save(currentEntity);
     }
 }
+

@@ -3,6 +3,7 @@ package com.example.demo.service.impl;
 import com.example.demo.entity.RecipeEntity;
 import com.example.demo.entity.UserListEntity;
 import com.example.demo.exception.list.RecipeListIsBlankException;
+import com.example.demo.exception.list.UserListNotFoundException;
 import com.example.demo.exception.recipe.RecipeNotFoundException;
 import com.example.demo.exception.user.UserNotFoundException;
 import com.example.demo.repository.RecipeRepository;
@@ -51,9 +52,14 @@ public class RecipeServiceImpl implements RecipeService {
         return save;
     }
 
-    public List<RecipeEntity> getRecipeByIngredients(String id) throws RecipeNotFoundException, UserNotFoundException {
-        List<UserListEntity> userListEntityList = userListRepository.findAllByUser(userService.findById(Long.valueOf(id)));
-        log.info("IN saveRecipe size of list {}",userListEntityList.size());
+    public List<RecipeEntity> getRecipeByIngredients(String userId) throws RecipeNotFoundException, UserNotFoundException, UserListNotFoundException {
+        List<UserListEntity> userListEntityList = userListRepository.findAllByUser(userService.findById(Long.valueOf(userId)));
+        if (userListEntityList.isEmpty()) {
+            log.warn("IN getRecipeByIngredients cannot found userList by user id: {}", userId);
+            throw new UserListNotFoundException("cannot found userList by user id: " + userId);
+        }
+
+        log.info("IN getRecipeByIngredients size of list {} elements: {}",userListEntityList.size(), userListEntityList);
         UserListEntity userListEntity = userListEntityList.get(userListEntityList.size() - 1);
         String recommendList = userListEntity.getRecommendList();
         String banList = userListEntity.getBanList();
@@ -63,9 +69,25 @@ public class RecipeServiceImpl implements RecipeService {
         recipeEntityList = recommendFilter(recommendList, recipeEntityList);
         recipeEntityList = sortByFilter(filter, recipeEntityList);
 
-        log.info("IN saveRecipe list successfully filtered {}",recipeEntityList);
+        if (recipeEntityList.isEmpty()) {
+            log.warn("IN getRecipeByIngredients cannot found with this userList id: {}", userListEntity.getId());
+            throw new RecipeNotFoundException("Cannot found with this userList id:" + userListEntity.getId());
+        }
+
+        log.info("IN getRecipeByIngredients list successfully filtered {}",recipeEntityList);
 
         return recipeEntityList;
+    }
+
+    public List<RecipeEntity> getAllRecipeEntity() throws RecipeListIsBlankException {
+        List<RecipeEntity> recipeEntities = recipeRepository.getRecipeEntities();
+
+        if (recipeEntities == null) {
+            log.warn("Recipe entities is blank");
+            throw new RecipeListIsBlankException("Recipe entities is blank");
+        }
+        log.info("Recipes are successfully found");
+        return recipeEntities;
     }
 
     private List<RecipeEntity> sortByFilter(String filter, List<RecipeEntity> recipeEntityList) {
@@ -162,17 +184,6 @@ public class RecipeServiceImpl implements RecipeService {
             recipeRepositoryById.ifPresent(recipeEntityList::add);
         }
         return recipeEntityList;
-    }
-
-    public List<RecipeEntity> getAllRecipeEntity() throws RecipeListIsBlankException {
-        List<RecipeEntity> recipeEntities = recipeRepository.getRecipeEntities();
-
-        if (recipeEntities == null) {
-            log.warn("Recipe entities is blank");
-            throw new RecipeListIsBlankException("Recipe entities is blank");
-        }
-        log.info("Recipes are successfully found");
-        return recipeEntities;
     }
 
 }
