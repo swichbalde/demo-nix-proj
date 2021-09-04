@@ -4,6 +4,7 @@ import com.example.demo.entity.UserListEntity;
 import com.example.demo.exception.list.RecommendAndBanListException;
 import com.example.demo.exception.list.RecommendListIsBlankException;
 import com.example.demo.exception.list.UserListNotFoundException;
+import com.example.demo.exception.user.UserNotFoundException;
 import com.example.demo.service.impl.UserListServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,11 +20,11 @@ public class UserListController {
     }
 
     @PostMapping("/recommend/{id}")
-    public ResponseEntity<String> postUserList(@RequestBody UserListEntity userListEntity, @PathVariable Long id) {
+    public ResponseEntity postUserList(@RequestBody UserListEntity userListEntity, @PathVariable Long id) {
         try {
             userListService.saveUserList(userListEntity, id);
-            return ResponseEntity.ok("user_list created");
-        } catch (RecommendListIsBlankException | RecommendAndBanListException ex) {
+            return ResponseEntity.ok(userListEntity);
+        } catch (RecommendListIsBlankException | RecommendAndBanListException | UserNotFoundException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error");
@@ -31,10 +32,10 @@ public class UserListController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<String> updateUserList(@PathVariable String id, @RequestBody UserListEntity userListEntity) {
+    public ResponseEntity updateUserList(@PathVariable String id, @RequestBody UserListEntity userListEntity) {
         try {
             userListService.updateUserListById(Long.valueOf(id), userListEntity);
-            return ResponseEntity.ok("user_list patched");
+            return ResponseEntity.ok(userListEntity);
         }catch (UserListNotFoundException | RecommendListIsBlankException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
         } catch (Exception e) {

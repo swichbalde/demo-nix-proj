@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.entity.RecipeEntity;
 import com.example.demo.entity.model.UserLoginModel;
 import com.example.demo.entity.model.UserModel;
 import com.example.demo.entity.user.User;
@@ -8,7 +9,7 @@ import com.example.demo.exception.user.UserNotFoundException;
 import com.example.demo.exception.user.UserPasswordSmall;
 import com.example.demo.security.jwt.JwtTokenProvider;
 import com.example.demo.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.demo.service.impl.RecipeServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,10 +26,12 @@ public class AdminController {
 
     private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
+    private final RecipeServiceImpl recipeService;
 
-    public AdminController(UserService userService, JwtTokenProvider jwtTokenProvider) {
+    public AdminController(UserService userService, JwtTokenProvider jwtTokenProvider, RecipeServiceImpl recipeService) {
         this.userService = userService;
         this.jwtTokenProvider = jwtTokenProvider;
+        this.recipeService = recipeService;
     }
 
     @GetMapping("/users/{id}")
@@ -38,6 +41,8 @@ public class AdminController {
             resultUser = userService.findById(Long.valueOf(id));
         } catch (UserNotFoundException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception ex) {
+            return ResponseEntity.badRequest().body("Unknown error");
         }
         UserModel userModel = UserModel.fromUser(resultUser);
         return new ResponseEntity<>(userModel, HttpStatus.OK);
@@ -63,6 +68,9 @@ public class AdminController {
         for (User user : all) {
             allUsers.add(UserModel.fromUser(user));
         }
+        if (allUsers.size() == 0) {
+            return ResponseEntity.badRequest().body("No users has found");
+        }
         return ResponseEntity.ok(allUsers);
     }
 
@@ -75,9 +83,6 @@ public class AdminController {
         User registrationUser;
         try {
             registrationUser = userService.registrationAdmin(user);
-            if (registrationUser.getRoles().get(0) == null) {
-                registrationUser.setRoles(userLoginModel.getRoles());
-            }
         } catch (UserPasswordSmall | DuplicateUserLogin e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception ex) {
@@ -91,5 +96,15 @@ public class AdminController {
         response.put("token", token);
 
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/recipe")
+    public ResponseEntity postRecipe(@Valid @RequestBody RecipeEntity recipeEntity) {
+        try {
+            recipeService.saveRecipe(recipeEntity);
+            return ResponseEntity.ok(recipeEntity);
+        }catch (Exception e) {
+            return ResponseEntity.badRequest().body("Unknown error");
+        }
     }
 }

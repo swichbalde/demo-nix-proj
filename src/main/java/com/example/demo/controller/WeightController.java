@@ -15,13 +15,13 @@ public class WeightController {
         this.weightService = weightService;
     }
 
-    @PostMapping("/control")
-    public ResponseEntity<String> control(@RequestBody WeightModel weightEntity) {
+    @PostMapping("/{id}")
+    public ResponseEntity control(@RequestBody WeightModel weightEntity, @PathVariable String id) {
         try {
-            weightService.saveWeightEntity(weightEntity);
-            return ResponseEntity.ok("weight entity created");
+            weightService.saveWeightEntity(weightEntity, Long.valueOf(id));
+            return ResponseEntity.ok(weightEntity);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error");
+            return ResponseEntity.badRequest().body("Unknown error");
         }
     }
 

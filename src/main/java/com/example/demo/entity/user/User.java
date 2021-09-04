@@ -1,5 +1,6 @@
 package com.example.demo.entity.user;
 
+import com.example.demo.entity.SaveWeightEntity;
 import com.example.demo.entity.UserListEntity;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,9 @@ public class User {
 
     @OneToMany(mappedBy = "id")
     private List<UserListEntity> userList;
+
+    @OneToOne
+    private SaveWeightEntity saveWeightEntity;
 
     @CreatedDate
     private Date created;

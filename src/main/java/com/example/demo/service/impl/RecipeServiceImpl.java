@@ -36,6 +36,10 @@ public class RecipeServiceImpl implements RecipeService {
     public RecipeEntity getRandomRecipe() throws RecipeNotFoundException {
         Random random = new Random();
         List<Long> allId = recipeRepository.getAllIds();
+        if (allId.isEmpty()) {
+            log.warn("IN getRandomRecipe recipe not found");
+            throw new RecipeNotFoundException("Recipe not found");
+        }
         Long recipeId = allId.get(random.nextInt(allId.size()));
 
         Optional<RecipeEntity> recipeRepositoryById = recipeRepository.findById(recipeId);

@@ -37,6 +37,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User registration(User user) throws DuplicateUserLogin, UserPasswordSmall {
         if (user.getPassword().length() < 8) {
+            log.warn("IN registration user enter small password");
             throw new UserPasswordSmall("Password cannot be less than 8 symbols");
         }
         if (userRepository.existsUserByLogin(user.getLogin())) {
@@ -51,6 +52,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User registrationAdmin(User user) throws DuplicateUserLogin, UserPasswordSmall {
         if (user.getPassword().length() < 8) {
+            log.warn("IN registrationAdmin user enter small password");
             throw new UserPasswordSmall("Password cannot be less than 8 symbols");
         }
         if (userRepository.existsUserByLogin(user.getLogin())) {

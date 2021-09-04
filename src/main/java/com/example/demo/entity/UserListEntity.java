@@ -23,8 +23,7 @@ public class UserListEntity {
     private String banList;
     private String filter;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @OneToOne
     private User user;
 
     public UserListEntity(Long id, String recommendList, String banList, String filter, User user) {

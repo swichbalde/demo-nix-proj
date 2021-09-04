@@ -7,7 +7,7 @@ import com.example.demo.exception.weight.WeightEntityNotFound;
 
 public interface WeightService {
 
-    SaveWeightEntity saveWeightEntity(WeightModel weightEntity);
+    SaveWeightEntity saveWeightEntity(WeightModel weightEntity, Long id) throws UserNotFoundException;
 
     SaveWeightEntity getWeightById(Long id) throws WeightEntityNotFound;
 }

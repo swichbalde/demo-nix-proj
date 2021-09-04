@@ -28,12 +28,13 @@ public class UserListServiceImpl implements UserListService {
 
     public UserListEntity saveUserList(UserListEntity userList, Long userId) throws RecommendListIsBlankException,
             RecommendAndBanListException, UserNotFoundException {
+
         if (userList.getRecommendList().isBlank()) {
-            log.warn("Recommend list cannot be blank");
+            log.warn("IN saveUserList recommend list cannot be blank");
             throw new RecommendListIsBlankException("Recommend list cannot be blank");
         }
         if (userList.getRecommendList().equals(userList.getBanList())) {
-            log.warn("Recommend list cannot be equals to ban list");
+            log.warn("IN saveUserList recommend list cannot be equals to ban list");
             throw new RecommendAndBanListException("Recommend list cannot equals ban list");
         }
         User user = userService.findById(userId);
@@ -70,6 +71,7 @@ public class UserListServiceImpl implements UserListService {
 
         if (!userListEntity.getFilter().isBlank())
             currentEntity.setFilter(userListEntity.getFilter());
+
         userListRepository.save(currentEntity);
     }
 }

@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Getter
@@ -19,11 +20,19 @@ public class RecipeEntity {
     private Long id;
 
     @Column(unique = true)
+    @NotBlank
     private String recipeName;
 
+    @NotBlank
     private String ingredients;
+
+    @NotBlank
     private Integer cookTime;
+
+    @NotBlank
     private Integer calories;
+
+    @NotBlank
     private Integer cost;
 
     public RecipeEntity(Long id, String recipeName, String ingredients, Integer cookTime, Integer calories, Integer cost) {

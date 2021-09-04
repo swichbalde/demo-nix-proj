@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.entity.SaveWeightEntity;
 import com.example.demo.entity.model.WeightModel;
+import com.example.demo.entity.user.User;
 import com.example.demo.exception.weight.WeightEntityNotFound;
 import com.example.demo.repository.WeightRepository;
 import com.example.demo.service.impl.WeightServiceImpl;
@@ -19,16 +20,19 @@ public class WeightServiceTest {
 
     WeightService weightService;
     WeightRepository weightRepository;
+    UserService userService;
 
     public WeightServiceTest() {
         weightRepository = mock(WeightRepository.class);
-        weightService = new WeightServiceImpl(weightRepository);
+        userService = mock(UserService.class);
+        weightService = new WeightServiceImpl(weightRepository, userService);
     }
 
+    @SneakyThrows
     @Test
     void testSaveEntity() {
         long id = 1;
-        SaveWeightEntity saveWeightEntityOriginal = new SaveWeightEntity(9500L, 10000L, Instant.now(), 500L, 2379.5361f);
+        SaveWeightEntity saveWeightEntityOriginal = new SaveWeightEntity(9500L, 10000L, Instant.now(), 500L, 2379.5361f, null);
 
         WeightModel weightModel = new WeightModel(9500L, 10000L, 205L);
 
@@ -40,8 +44,9 @@ public class WeightServiceTest {
             entity.setId(id);
             return entity;
         });
+        when(userService.findById(id)).thenReturn(new User());
 
-        SaveWeightEntity saveWeightEntitySaved = weightService.saveWeightEntity(weightModel);
+        SaveWeightEntity saveWeightEntitySaved = weightService.saveWeightEntity(weightModel, id);
 
         assertThat(weightModel.getCurrentWeight()).isEqualTo(saveWeightEntitySaved.getCurrentWeight());
         assertThat(weightModel.getNewWeight()).isEqualTo(saveWeightEntitySaved.getNewWeight());
@@ -53,7 +58,7 @@ public class WeightServiceTest {
         long id = 1;
         long absId = 100;
         WeightModel weightModel = new WeightModel(9500L, 10000L, 205L);
-        SaveWeightEntity saveWeightEntityOriginal = new SaveWeightEntity(9500L, 10000L, null, 500L, 2379.5361f);
+        SaveWeightEntity saveWeightEntityOriginal = new SaveWeightEntity(9500L, 10000L, null, 500L, 2379.5361f, null);
 
         when(weightRepository.findById(id)).thenReturn(Optional.of(saveWeightEntityOriginal));
         SaveWeightEntity weightById = weightService.getWeightById(id);
