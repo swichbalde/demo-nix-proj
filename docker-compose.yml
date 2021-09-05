@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+
+  demo:
+    image: demo:0.0.1-SNAPSHOT
+    build:
+      context: .
+    container_name: demo
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/demo_db
+      SPRING_DATASOURCE_PASSWORD: changeme
+    depends_on:
+      - db
+    ports:
+      - 8080:8080
+
+  db:
+    image: postgres:13
+    container_name: fdemo_db
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: changeme
+      POSTGRES_DB: demo_db
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+volumes:
+  db-data:
+    driver: local

@@ -19,7 +19,7 @@
 		<jsonwebtoken.version>0.8.0</jsonwebtoken.version>
 		<postgresql.version>42.2.10</postgresql.version>
 		<java-jwt.version>3.17.0</java-jwt.version>
-		<open-api.version>1.5.2</open-api.version>
+		<open-api.version>1.5.9</open-api.version>
 	</properties>
 
 	<dependencies>
@@ -117,11 +117,10 @@
 			<artifactId>springdoc-openapi-ui</artifactId>
 			<version>${open-api.version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-security</artifactId>
-			<version>1.5.10</version>
+			<version>${open-api.version}</version>
 		</dependency>
 
 	</dependencies>
