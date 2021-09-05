@@ -52,7 +52,6 @@ class GoodLifestyleApplicationTests {
 		role = new Role();
 		role.setName("ROLE_ADMIN");
 		roles.add(role);
-		userLoginModel.setRoles(roles);
 
 		ResponseEntity<Map> entityBody = testRestTemplate.postForEntity("http://localhost:" + port + "/auth/registration", userLoginModel, Map.class);
 
