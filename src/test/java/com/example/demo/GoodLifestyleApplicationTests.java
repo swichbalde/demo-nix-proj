@@ -1,7 +1,6 @@
 package com.example.demo;
 
 import com.example.demo.entity.model.UserLoginModel;
-import com.example.demo.entity.user.Role;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,8 +11,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -37,24 +34,15 @@ class GoodLifestyleApplicationTests {
 
 	@Test
 	void testRegistrationLoginUser() {
-		String login = "username1";
-		String password = "testtest1";
+		String login = "username";
+		String password = "testtest";
 
 		UserLoginModel userLoginModel = new UserLoginModel();
 		userLoginModel.setUsername(login);
 		userLoginModel.setPassword(password);
 
-		Role role = new Role();
-		List<Role> roles = new ArrayList<>();
-		role.setName("ROLE_USER");
-		roles.add(role);
-
-		role = new Role();
-		role.setName("ROLE_ADMIN");
-		roles.add(role);
-
-		ResponseEntity<Map> entityBody = testRestTemplate.postForEntity("http://localhost:" + port + "/auth/registration", userLoginModel, Map.class);
-
+		ResponseEntity<Map> entityBody = testRestTemplate
+				.postForEntity("http://localhost:" + port + "/auth/registration", userLoginModel, Map.class);
 		assertEquals(HttpStatus.OK, entityBody.getStatusCode());
 		assertEquals(MediaType.APPLICATION_JSON, entityBody.getHeaders().getContentType());
 		//check login and token

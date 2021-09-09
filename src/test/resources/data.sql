@@ -6,7 +6,7 @@ create table IF NOT EXISTS users (
 );
 
 create table IF NOT EXISTS role (
-                                    id int primary key ,
+                                    id serial primary key ,
                                     name varchar(255)
 );
 
@@ -17,9 +17,9 @@ create table IF NOT EXISTS user_roles(
                                          foreign key (role_id) references role(id)
 );
 
-insert into users(id, login, password) values (1, 'username', 'testtest' );
-insert into role(id, name) values ( 1, 'ROLE_USER' );
-insert into role(id, name) values ( 2, 'ROLE_ADMIN' );
+insert into users(login, password) values ('username', 'testtest' );
+insert into role(name) values ('ROLE_USER' );
+insert into role(name) values ('ROLE_ADMIN' );
 
 insert into user_roles(user_id, role_id) values(1,1);
 insert into user_roles(user_id, role_id) values(1,2);
