@@ -6,7 +6,6 @@ import com.example.demo.entity.user.User;
 import com.example.demo.exception.weight.WeightEntityNotFound;
 import com.example.demo.repository.WeightRepository;
 import com.example.demo.service.impl.WeightServiceImpl;
-import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
@@ -28,9 +27,8 @@ public class WeightServiceTest {
         weightService = new WeightServiceImpl(weightRepository, userService);
     }
 
-    @SneakyThrows
     @Test
-    void testSaveEntity() {
+    void testSaveEntity() throws Exception {
         long id = 1;
         SaveWeightEntity saveWeightEntityOriginal = new SaveWeightEntity(9500L, 10000L, Instant.now(), 500L, 2379.5361f, null);
 
@@ -52,9 +50,8 @@ public class WeightServiceTest {
         assertThat(weightModel.getNewWeight()).isEqualTo(saveWeightEntitySaved.getNewWeight());
     }
 
-    @SneakyThrows
     @Test
-    void testGetById() {
+    void testGetById() throws Exception {
         long id = 1;
         long absId = 100;
         WeightModel weightModel = new WeightModel(9500L, 10000L, 205L);

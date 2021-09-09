@@ -6,9 +6,9 @@ services:
     image: demo:0.0.1-SNAPSHOT
     build:
       context: .
-    container_name: demo
+    container_name: body_controller
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/demo_db
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/body_controller_db
       SPRING_DATASOURCE_PASSWORD: changeme
     depends_on:
       - db
@@ -17,11 +17,11 @@ services:
 
   db:
     image: postgres:13
-    container_name: fdemo_db
+    container_name: body_controller_db
     restart: always
     environment:
       POSTGRES_PASSWORD: changeme
-      POSTGRES_DB: demo_db
+      POSTGRES_DB: body_controller_db
     volumes:
       - db-data:/var/lib/postgresql/data
     ports:

@@ -4,7 +4,6 @@ import com.example.demo.entity.UserListEntity;
 import com.example.demo.exception.list.UserListNotFoundException;
 import com.example.demo.repository.UserListRepository;
 import com.example.demo.service.impl.UserListServiceImpl;
-import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -29,9 +28,8 @@ public class UserListServiceTest {
         userListService = new UserListServiceImpl(userListRepository, userService);
     }
 
-    @SneakyThrows
     @Test
-    void testUserListById() {
+    void testUserListById() throws Exception {
         var absentId = 125L;
         var presentId = 1L;
         var userList = new UserListEntity();
@@ -57,9 +55,8 @@ public class UserListServiceTest {
         verifyNoMoreInteractions(userListRepository);
     }
 
-    @SneakyThrows
     @Test
-    void testSaveUserList() {
+    void testSaveUserList() throws Exception {
         long id = 1;
         var userList = new UserListEntity();
         userList.setId(id);
@@ -85,9 +82,8 @@ public class UserListServiceTest {
         verify(userListRepository).save(userList);
     }
 
-    @SneakyThrows
     @Test
-    void testUpdateUserList() {
+    void testUpdateUserList() throws Exception {
         var presentId = 1L;
         var absentId = 10L;
         var update = new UserListEntity();

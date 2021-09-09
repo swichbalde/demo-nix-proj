@@ -8,7 +8,6 @@ import com.example.demo.repository.RecipeRepository;
 import com.example.demo.repository.UserListRepository;
 import com.example.demo.service.impl.RecipeServiceImpl;
 import com.example.demo.util.MapUtils;
-import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -37,9 +36,8 @@ public class RecipeServiceTest {
         recipeService = new RecipeServiceImpl(recipeRepository, userListRepository, mapUtils, userService);
     }
 
-    @SneakyThrows
     @Test
-    void testAllRecipe() {
+    void testAllRecipe() throws Exception {
         List<RecipeEntity> allRecipeEntity = recipeService.getAllRecipeEntity();
 
         assertEquals(0, allRecipeEntity.size());
@@ -82,9 +80,8 @@ public class RecipeServiceTest {
 
     }
 
-    @SneakyThrows
     @Test
-    void testGetRecipeById() {
+    void testGetRecipeById() throws Exception {
         long id = 1;
         RecipeEntity recipeEntity = new RecipeEntity(id, "scrumble", "egg", 10, 10, 10);
         recipeService.saveRecipe(recipeEntity);
