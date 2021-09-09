@@ -44,3 +44,6 @@ create table user_roles (
     user_id bigint references users(id),
     role_id bigint references role(id)
 );
+
+insert into role(id, name) values ( 1, 'ROLE_USER' );
+insert into role(id, name) values ( 2, 'ROLE_ADMIN' );
