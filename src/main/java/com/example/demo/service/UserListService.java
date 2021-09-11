@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.UserListEntity;
+import com.example.demo.entity.userlist.UserListEntity;
 import com.example.demo.exception.list.RecommendAndBanListException;
 import com.example.demo.exception.list.RecommendListIsBlankException;
 import com.example.demo.exception.list.UserListNotFoundException;

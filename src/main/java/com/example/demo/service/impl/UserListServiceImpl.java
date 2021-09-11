@@ -1,6 +1,6 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.entity.UserListEntity;
+import com.example.demo.entity.userlist.UserListEntity;
 import com.example.demo.entity.user.User;
 import com.example.demo.exception.list.RecommendAndBanListException;
 import com.example.demo.exception.list.RecommendListIsBlankException;
@@ -33,6 +33,7 @@ public class UserListServiceImpl implements UserListService {
             log.warn("IN saveUserList recommend list cannot be blank");
             throw new RecommendListIsBlankException("Recommend list cannot be blank");
         }
+
         if (userList.getRecommendList().equals(userList.getBanList())) {
             log.warn("IN saveUserList recommend list cannot be equals to ban list");
             throw new RecommendAndBanListException("Recommend list cannot equals ban list");
@@ -40,6 +41,7 @@ public class UserListServiceImpl implements UserListService {
         User user = userService.findById(userId);
         userList.setUser(user);
         userListRepository.save(userList);
+        log.info("IN saveUserList userlist successfully saved");
         return userList;
     }
 

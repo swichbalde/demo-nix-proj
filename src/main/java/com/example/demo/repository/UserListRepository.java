@@ -1,8 +1,7 @@
 package com.example.demo.repository;
 
-import com.example.demo.entity.UserListEntity;
+import com.example.demo.entity.userlist.UserListEntity;
 import com.example.demo.entity.user.User;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Component;
 

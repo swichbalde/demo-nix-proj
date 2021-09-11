@@ -49,7 +49,7 @@ public class RecipeController {
         }catch (RecipeListIsBlankException exception) {
             return ResponseEntity.badRequest().body(exception.getMessage());
         }catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error");
+            return ResponseEntity.badRequest().body("Unknown error");
         }
     }
 }

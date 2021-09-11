@@ -1,7 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.RecipeEntity;
-import com.example.demo.entity.UserListEntity;
+import com.example.demo.entity.userlist.UserListEntity;
 import com.example.demo.exception.list.RecipeListIsBlankException;
 import com.example.demo.exception.list.UserListNotFoundException;
 import com.example.demo.exception.recipe.RecipeNotFoundException;
@@ -114,7 +114,7 @@ public class RecipeServiceImpl implements RecipeService {
                     mapValues.put(recipeEntity.getId(), recipeEntity.getCost());
                 }
         }
-        HashMap<Long, Integer> sortedByFilter = mapUtils.sortByValue(mapValues);
+        Map<Long, Integer> sortedByFilter = mapUtils.sortByValue2(true, mapValues);
 
         recipeEntityList = new ArrayList<>();
         for (Map.Entry<Long, Integer> entry : sortedByFilter.entrySet()) {

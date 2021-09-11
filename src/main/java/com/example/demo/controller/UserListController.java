@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.UserListEntity;
+import com.example.demo.entity.userlist.RequestUserListEntity;
+import com.example.demo.entity.userlist.UserListEntity;
 import com.example.demo.exception.list.RecommendAndBanListException;
 import com.example.demo.exception.list.RecommendListIsBlankException;
 import com.example.demo.exception.list.UserListNotFoundException;
@@ -20,26 +21,28 @@ public class UserListController {
     }
 
     @PostMapping("/recommend/{id}")
-    public ResponseEntity postUserList(@RequestBody UserListEntity userListEntity, @PathVariable Long id) {
+    public ResponseEntity postUserList(@RequestBody RequestUserListEntity requestUserListEntity, @PathVariable Long id) {
         try {
+            UserListEntity userListEntity = requestUserListEntity.toUserList(requestUserListEntity);
             userListService.saveUserList(userListEntity, id);
-            return ResponseEntity.ok(userListEntity);
+            return ResponseEntity.ok(requestUserListEntity);
         } catch (RecommendListIsBlankException | RecommendAndBanListException | UserNotFoundException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error");
+            return ResponseEntity.badRequest().body("Unknown error");
         }
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity updateUserList(@PathVariable String id, @RequestBody UserListEntity userListEntity) {
+    public ResponseEntity updateUserList(@PathVariable Long id, @RequestBody RequestUserListEntity requestUserListEntity) {
         try {
-            userListService.updateUserListById(Long.valueOf(id), userListEntity);
-            return ResponseEntity.ok(userListEntity);
+            UserListEntity userListEntity = requestUserListEntity.toUserList(requestUserListEntity);
+            userListService.updateUserListById(id, userListEntity);
+            return ResponseEntity.ok(requestUserListEntity);
         }catch (UserListNotFoundException | RecommendListIsBlankException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error");
+            return ResponseEntity.badRequest().body("Unknown error");
         }
     }
 
@@ -50,7 +53,7 @@ public class UserListController {
         }catch (UserListNotFoundException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error");
+            return ResponseEntity.badRequest().body("Unknown error");
         }
     }
 }

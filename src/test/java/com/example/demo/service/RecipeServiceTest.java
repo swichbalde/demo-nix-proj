@@ -1,7 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.RecipeEntity;
-import com.example.demo.entity.UserListEntity;
+import com.example.demo.entity.userlist.UserListEntity;
 import com.example.demo.entity.user.User;
 import com.example.demo.exception.recipe.RecipeNotFoundException;
 import com.example.demo.repository.RecipeRepository;

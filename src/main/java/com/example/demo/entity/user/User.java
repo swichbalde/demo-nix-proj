@@ -1,7 +1,7 @@
 package com.example.demo.entity.user;
 
 import com.example.demo.entity.SaveWeightEntity;
-import com.example.demo.entity.UserListEntity;
+import com.example.demo.entity.userlist.UserListEntity;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;

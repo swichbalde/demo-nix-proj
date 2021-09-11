@@ -1,6 +1,7 @@
 package com.example.demo.util;
 
 import org.springframework.stereotype.Component;
+import java.util.Map.Entry;
 
 import java.util.*;
 
@@ -27,5 +28,24 @@ public class MapUtilsImpl implements MapUtils{
             temp.put(aa.getKey(), aa.getValue());
         }
         return temp;
+    }
+
+    public Map<Long, Integer> sortByValue2(boolean order, HashMap<Long, Integer> map)
+    {
+        List<Entry<Long, Integer>> list = new LinkedList<>(map.entrySet());
+        list.sort((o1, o2) -> {
+            if (order) {
+                return o1.getValue().compareTo(o2.getValue());
+            } else {
+                return o2.getValue().compareTo(o1.getValue());
+            }
+        });
+
+        Map<Long, Integer> sortedMap = new LinkedHashMap<>();
+        for (Entry<Long, Integer> entry : list)
+        {
+            sortedMap.put(entry.getKey(), entry.getValue());
+        }
+        return sortedMap;
     }
 }
