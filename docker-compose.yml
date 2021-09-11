@@ -9,7 +9,7 @@ services:
     container_name: body_controller
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/body_controller_db
-      SPRING_DATASOURCE_PASSWORD: changeme
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
     depends_on:
       - db
     ports:
@@ -20,7 +20,7 @@ services:
     container_name: body_controller_db
     restart: always
     environment:
-      POSTGRES_PASSWORD: changeme
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: body_controller_db
     volumes:
       - db-data:/var/lib/postgresql/data
