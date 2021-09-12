@@ -17,6 +17,8 @@ public class SpringDocConfig {
                 .components(new Components().addSecuritySchemes("bearer-key",
                         new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT")))
                 .addSecurityItem(new SecurityRequirement().addList("bearer-key"))
-                .info(new Info().title("Body Controller API"));
+                .info(new Info().title("Body Controller API"))
+                .info(new Info().description("This API will help you keep track of your body and nutrition" +
+                        ", as well as select a recipe for your preferences"));
     }
 }

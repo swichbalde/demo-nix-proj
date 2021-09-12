@@ -64,6 +64,10 @@ public class UserServiceImpl implements UserService {
         return regUser(user, role);
     }
 
+    public void updateUser(User user) {
+        userRepository.save(user);
+    }
+
     private User regUser(User user, Role role) {
         List<Role> roleList = new ArrayList<>();
 

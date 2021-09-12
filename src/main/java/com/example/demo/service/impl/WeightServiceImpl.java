@@ -36,8 +36,13 @@ public class WeightServiceImpl implements WeightService {
         Long difference = weightEntity.getCurrentWeight() - weightEntity.getNewWeight();
         float bmi = (float) weightEntity.getNewWeight() / (weightEntity.getHeight() * weightEntity.getHeight());
         bmi *= 10000;
+
+        SaveWeightEntity saveWeightEntity = weightRepository.save(new SaveWeightEntity(weightEntity.getCurrentWeight(), weightEntity.getNewWeight(), Instant.now(), difference, bmi, user));
+        user.setSaveWeightEntity(saveWeightEntity);
+        userService.updateUser(user);
+
         log.info("IN saveWeightEntity, weightEntity successfully saved");
-        return weightRepository.save(new SaveWeightEntity(weightEntity.getCurrentWeight(), weightEntity.getNewWeight(), Instant.now(), difference, bmi, user));
+        return saveWeightEntity;
     }
 
     public SaveWeightEntity getWeightById(Long id) throws WeightEntityNotFound {

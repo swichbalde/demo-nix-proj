@@ -42,7 +42,7 @@ public class RecipeController {
         }
     }
 
-    @GetMapping("/admin/all")
+    @GetMapping("/all")
     public ResponseEntity getAllRecipes() {
         try {
             return ResponseEntity.ok(recipeService.getAllRecipeEntity());

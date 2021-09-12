@@ -16,7 +16,7 @@ public class WeightController {
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity control(@RequestBody WeightModel weightEntity, @PathVariable String id) {
+    public ResponseEntity saveWeight(@RequestBody WeightModel weightEntity, @PathVariable String id) {
         try {
             weightService.saveWeightEntity(weightEntity, Long.valueOf(id));
             return ResponseEntity.ok(weightEntity);
