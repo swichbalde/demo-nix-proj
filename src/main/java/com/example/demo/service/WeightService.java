@@ -9,5 +9,7 @@ public interface WeightService {
 
     SaveWeightEntity saveWeightEntity(WeightModel weightEntity, Long id) throws UserNotFoundException;
 
-    SaveWeightEntity getWeightById(Long id) throws WeightEntityNotFound;
+    SaveWeightEntity getWeightByUserId(Long id) throws WeightEntityNotFound, UserNotFoundException;
+
+    SaveWeightEntity updateWeightEntity(WeightModel weightModel, Long id) throws WeightEntityNotFound;
 }

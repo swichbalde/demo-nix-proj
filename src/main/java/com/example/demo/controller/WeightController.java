@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.model.WeightModel;
+import com.example.demo.exception.user.UserNotFoundException;
+import com.example.demo.exception.weight.WeightEntityNotFound;
 import com.example.demo.service.impl.WeightServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,22 +18,36 @@ public class WeightController {
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity saveWeight(@RequestBody WeightModel weightEntity, @PathVariable String id) {
+    public ResponseEntity saveWeight(@RequestBody WeightModel weightEntity, @PathVariable Long id) {
         try {
-            weightService.saveWeightEntity(weightEntity, Long.valueOf(id));
+            weightService.saveWeightEntity(weightEntity, id);
             return ResponseEntity.ok(weightEntity);
+        } catch (UserNotFoundException ex) {
+            return ResponseEntity.badRequest().body(ex);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Unknown error");
         }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity getUser(@PathVariable String id) {
+    public ResponseEntity getWeightByUser(@PathVariable Long id) {
         try {
-            return ResponseEntity.ok(weightService.getWeightById(Long.valueOf(id)));
+            return ResponseEntity.ok(weightService.getWeightByUserId(id));
+        } catch (UserNotFoundException | WeightEntityNotFound e) {
+            return ResponseEntity.badRequest().body(e);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error");
         }
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity updateWeightEntity(@RequestBody WeightModel weightEntity, @PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(weightService.updateWeightEntity(weightEntity, id));
+        } catch (WeightEntityNotFound ex) {
+            return ResponseEntity.badRequest().body(ex);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Unknown error");
+        }
+    }
 }

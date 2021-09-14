@@ -3,6 +3,7 @@ package com.example.demo.service;
 import com.example.demo.entity.SaveWeightEntity;
 import com.example.demo.entity.model.WeightModel;
 import com.example.demo.entity.user.User;
+import com.example.demo.exception.user.UserNotFoundException;
 import com.example.demo.exception.weight.WeightEntityNotFound;
 import com.example.demo.repository.WeightRepository;
 import com.example.demo.service.impl.WeightServiceImpl;
@@ -32,7 +33,7 @@ public class WeightServiceTest {
         long id = 1;
         SaveWeightEntity saveWeightEntityOriginal = new SaveWeightEntity(9500L, 10000L, Instant.now(), 500L, 2379.5361f, null);
 
-        WeightModel weightModel = new WeightModel(9500L, 10000L, 205L);
+        WeightModel weightModel = new WeightModel(9500L, 10000L, 205);
 
         when(weightRepository.save(notNull())).thenAnswer(invocation -> {
             SaveWeightEntity entity = invocation.getArgument(0);
@@ -54,16 +55,55 @@ public class WeightServiceTest {
     void testGetById() throws Exception {
         long id = 1;
         long absId = 100;
-        WeightModel weightModel = new WeightModel(9500L, 10000L, 205L);
-        SaveWeightEntity saveWeightEntityOriginal = new SaveWeightEntity(9500L, 10000L, null, 500L, 2379.5361f, null);
+        User user = new User(id, "test", "test");
+        WeightModel weightModel = new WeightModel(9500L, 10000L, 205);
+        SaveWeightEntity saveWeightEntityOriginal =
+                new SaveWeightEntity(9500L, 10000L, null, 500L, 2379.5361f, user);
 
-        when(weightRepository.findById(id)).thenReturn(Optional.of(saveWeightEntityOriginal));
-        SaveWeightEntity weightById = weightService.getWeightById(id);
+        when(userService.findById(id)).thenReturn(user);
+        when(weightRepository.findByUser(user)).thenReturn(Optional.of(saveWeightEntityOriginal));
+        SaveWeightEntity weightById = weightService.getWeightByUserId(id);
 
-        assertThatExceptionOfType(WeightEntityNotFound.class)
-                .isThrownBy(() -> weightService.getWeightById(absId));
+        assertThatExceptionOfType(UserNotFoundException.class)
+                .isThrownBy(() -> weightService.getWeightByUserId(absId));
 
         assertThat(weightModel.getCurrentWeight()).isEqualTo(weightById.getCurrentWeight());
         assertThat(weightModel.getNewWeight()).isEqualTo(weightById.getNewWeight());
+    }
+
+    @Test
+    void testUpdateWeight() throws Exception {
+        var presentId = 1L;
+        var absentId = 10L;
+        var update = new WeightModel();
+        update.setCurrentWeight(9500L);
+        update.setNewWeight(10000L);
+        update.setHeight(205);
+
+        var weightModel = new WeightModel();
+        weightModel.setCurrentWeight(5000L);
+        weightModel.setNewWeight(75000L);
+        weightModel.setHeight(206);
+
+        SaveWeightEntity saveWeightEntityOriginal =
+                new SaveWeightEntity(9500L, 10000L, null, 500L, 2379.5361f, null);
+
+        when(weightRepository.findById(absentId)).thenReturn(Optional.empty());
+        when(weightRepository.findById(presentId)).thenReturn(Optional.of(saveWeightEntityOriginal));
+        when(weightRepository.save(same(saveWeightEntityOriginal))).thenReturn(saveWeightEntityOriginal);
+
+        assertThatExceptionOfType(WeightEntityNotFound.class)
+                .isThrownBy(() -> weightService.updateWeightEntity(update, absentId));
+
+        verify(weightRepository).findById(absentId);
+
+        SaveWeightEntity saveWeightEntity = weightService.updateWeightEntity(update, presentId);
+
+        assertThat(update.getCurrentWeight()).isEqualTo(saveWeightEntity.getCurrentWeight());
+        assertThat(update.getNewWeight()).isEqualTo(saveWeightEntity.getNewWeight());
+        verify(weightRepository).findById(presentId);
+        verify(weightRepository).save(saveWeightEntityOriginal);
+
+        verifyNoMoreInteractions(weightRepository);
     }
 }

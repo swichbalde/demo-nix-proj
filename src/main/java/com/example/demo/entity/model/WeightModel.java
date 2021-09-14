@@ -3,12 +3,12 @@ package com.example.demo.entity.model;
 public class WeightModel {
     private Long currentWeight;
     private Long newWeight;
-    private Long height;
+    private Integer height;
 
     public WeightModel() {
     }
 
-    public WeightModel(Long currentWeight, Long newWeight, Long height) {
+    public WeightModel(Long currentWeight, Long newWeight, Integer height) {
         this.currentWeight = currentWeight;
         this.newWeight = newWeight;
         this.height = height;
@@ -30,11 +30,11 @@ public class WeightModel {
         this.newWeight = newWeight;
     }
 
-    public Long getHeight() {
+    public Integer getHeight() {
         return height;
     }
 
-    public void setHeight(Long height) {
+    public void setHeight(Integer height) {
         this.height = height;
     }
 }

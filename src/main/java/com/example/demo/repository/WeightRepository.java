@@ -1,7 +1,12 @@
 package com.example.demo.repository;
 
 import com.example.demo.entity.SaveWeightEntity;
-import org.springframework.data.repository.CrudRepository;
+import com.example.demo.entity.user.User;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface WeightRepository extends CrudRepository<SaveWeightEntity, Long> {
+import java.util.Optional;
+
+public interface WeightRepository extends JpaRepository<SaveWeightEntity, Long> {
+
+    Optional<SaveWeightEntity> findByUser(User user);
 }

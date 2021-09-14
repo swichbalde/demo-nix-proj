@@ -26,14 +26,14 @@ public class WeightServiceImpl implements WeightService {
         this.userService = userService;
     }
 
-    public SaveWeightEntity saveWeightEntity(WeightModel weightEntity, Long id) throws UserNotFoundException {
-        User user = userService.findById(id);
+    public SaveWeightEntity saveWeightEntity(WeightModel weightEntity, Long UserId) throws UserNotFoundException {
+        User user = userService.findById(UserId);
         if (user == null) {
-            log.warn("IN saveWeightEntity user with id: {} not found", id);
-            throw new UserNotFoundException("IN saveWeightEntity user with id " + id + " not found");
+            log.warn("IN saveWeightEntity user with id: {} not found", UserId);
+            throw new UserNotFoundException("IN saveWeightEntity user with id " + UserId + " not found");
         }
 
-        Long difference = weightEntity.getCurrentWeight() - weightEntity.getNewWeight();
+        long difference = weightEntity.getCurrentWeight() - weightEntity.getNewWeight();
         float bmi = (float) weightEntity.getNewWeight() / (weightEntity.getHeight() * weightEntity.getHeight());
         bmi *= 10000;
 
@@ -45,13 +45,41 @@ public class WeightServiceImpl implements WeightService {
         return saveWeightEntity;
     }
 
-    public SaveWeightEntity getWeightById(Long id) throws WeightEntityNotFound {
-        Optional<SaveWeightEntity> currentEntity = weightRepository.findById(id);
+    public SaveWeightEntity getWeightByUserId(Long id) throws UserNotFoundException, WeightEntityNotFound {
+        User user = userService.findById(id);
+        if (user == null) {
+            log.warn("IN getWeightByUserId user entity with this id {} not found", id);
+            throw new UserNotFoundException("user with this id " + id + " not found");
+        }
+        Optional<SaveWeightEntity> currentEntity = weightRepository.findByUser(user);
         if (currentEntity.isEmpty()) {
-            log.warn("IN getWeightById weight entity with this id {} not found", id);
+            log.warn("IN getWeightByUserId weight entity with this id {} not found", id);
             throw new WeightEntityNotFound("user with this id " + id + " not found");
         }
-        log.info("IN getWeightById weight entity successfully found by id: {}", id);
+        log.info("IN getWeightByUserId weight entity successfully found by id: {}", id);
         return currentEntity.get();
+    }
+
+    public SaveWeightEntity updateWeightEntity(WeightModel weightModel, Long id) throws WeightEntityNotFound {
+        SaveWeightEntity saveWeightEntity = weightRepository.findById(id).orElseThrow(() -> {
+            log.warn("IN updateWeightEntity weight entity with this id {} not found", id);
+            return new WeightEntityNotFound("weight entity with this id " + id + " not found");
+        });
+
+        if (weightModel.getCurrentWeight() == null)
+            saveWeightEntity.setCurrentWeight(weightModel.getCurrentWeight());
+
+        if (weightModel.getNewWeight() == null)
+            saveWeightEntity.setNewWeight(weightModel.getNewWeight());
+
+        long difference = weightModel.getCurrentWeight() - weightModel.getNewWeight();
+        float bmi = (float) weightModel.getNewWeight() / (weightModel.getHeight() * weightModel.getHeight());
+        bmi *= 10000;
+
+        saveWeightEntity.setDifference(difference);
+        saveWeightEntity.setBmi(bmi);
+
+        log.info("IN updateWeightEntity weight entity successfully updated by id: {}", id);
+        return weightRepository.save(saveWeightEntity);
     }
 }
