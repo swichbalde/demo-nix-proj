@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
             throw new UserPasswordSmall("Password cannot be less than 8 symbols");
         }
         if (userRepository.existsUserByLogin(user.getLogin())) {
-            log.warn("User with login {} exist", user.getLogin());
+            log.warn("IN user with login {} exist", user.getLogin());
             throw new DuplicateUserLogin("User with login:" + user.getLogin() + " exist");
         }
 
@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
             throw new UserPasswordSmall("Password cannot be less than 8 symbols");
         }
         if (userRepository.existsUserByLogin(user.getLogin())) {
-            log.warn("User with login {} exist", user.getLogin());
+            log.warn("IN registrationAdmin user with login {} exist", user.getLogin());
             throw new DuplicateUserLogin("User with login:" + user.getLogin() + " exist");
         }
 
@@ -64,7 +64,12 @@ public class UserServiceImpl implements UserService {
         return regUser(user, role);
     }
 
-    public void updateUser(User user) {
+    public void updateUser(User user) throws UserNotFoundException{
+        userRepository.findById(user.getId()).orElseThrow(() -> {
+            log.warn("IN updateUser user with id {} not found", user.getLogin());
+            return new UserNotFoundException("User with login:" + user.getLogin() + " exist");
+        });
+        log.info("IN updateUser user successfully updated with id: {}", user.getId());
         userRepository.save(user);
     }
 
