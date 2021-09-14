@@ -80,11 +80,6 @@ public class WeightServiceTest {
         update.setNewWeight(10000L);
         update.setHeight(205);
 
-        var weightModel = new WeightModel();
-        weightModel.setCurrentWeight(5000L);
-        weightModel.setNewWeight(75000L);
-        weightModel.setHeight(206);
-
         SaveWeightEntity saveWeightEntityOriginal =
                 new SaveWeightEntity(9500L, 10000L, null, 500L, 2379.5361f, null);
 
