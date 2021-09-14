@@ -1,6 +1,6 @@
 package com.example.demo.entity.user;
 
-import com.example.demo.entity.SaveWeightEntity;
+import com.example.demo.entity.weight.SaveWeightEntity;
 import com.example.demo.entity.userlist.UserListEntity;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.model.WeightModel;
+import com.example.demo.entity.weight.WeightModel;
 import com.example.demo.exception.user.UserNotFoundException;
 import com.example.demo.exception.weight.WeightEntityNotFound;
 import com.example.demo.service.impl.WeightServiceImpl;
@@ -23,7 +23,7 @@ public class WeightController {
             weightService.saveWeightEntity(weightEntity, id);
             return ResponseEntity.ok(weightEntity);
         } catch (UserNotFoundException ex) {
-            return ResponseEntity.badRequest().body(ex);
+            return ResponseEntity.badRequest().body(ex.getMessage());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Unknown error");
         }
@@ -34,9 +34,9 @@ public class WeightController {
         try {
             return ResponseEntity.ok(weightService.getWeightByUserId(id));
         } catch (UserNotFoundException | WeightEntityNotFound e) {
-            return ResponseEntity.badRequest().body(e);
+            return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error");
+            return ResponseEntity.badRequest().body("Unknown error");
         }
     }
 
@@ -45,7 +45,7 @@ public class WeightController {
         try {
             return ResponseEntity.ok(weightService.updateWeightEntity(weightEntity, id));
         } catch (WeightEntityNotFound ex) {
-            return ResponseEntity.badRequest().body(ex);
+            return ResponseEntity.badRequest().body(ex.getMessage());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Unknown error");
         }

@@ -1,7 +1,8 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.SaveWeightEntity;
-import com.example.demo.entity.model.WeightModel;
+import com.example.demo.entity.weight.ResponseWeightModel;
+import com.example.demo.entity.weight.SaveWeightEntity;
+import com.example.demo.entity.weight.WeightModel;
 import com.example.demo.entity.user.User;
 import com.example.demo.exception.user.UserNotFoundException;
 import com.example.demo.exception.weight.WeightEntityNotFound;
@@ -10,6 +11,7 @@ import com.example.demo.service.impl.WeightServiceImpl;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -61,14 +63,14 @@ public class WeightServiceTest {
                 new SaveWeightEntity(9500L, 10000L, null, 500L, 2379.5361f, user);
 
         when(userService.findById(id)).thenReturn(user);
-        when(weightRepository.findByUser(user)).thenReturn(Optional.of(saveWeightEntityOriginal));
-        SaveWeightEntity weightById = weightService.getWeightByUserId(id);
+        when(weightRepository.findAllByUser(user)).thenReturn(List.of(saveWeightEntityOriginal));
+        ResponseWeightModel weightByUserId = weightService.getWeightByUserId(id);
 
         assertThatExceptionOfType(UserNotFoundException.class)
                 .isThrownBy(() -> weightService.getWeightByUserId(absId));
 
-        assertThat(weightModel.getCurrentWeight()).isEqualTo(weightById.getCurrentWeight());
-        assertThat(weightModel.getNewWeight()).isEqualTo(weightById.getNewWeight());
+        assertThat(weightModel.getCurrentWeight()).isEqualTo(weightByUserId.getCurrentWeight());
+        assertThat(weightModel.getNewWeight()).isEqualTo(weightByUserId.getNewWeight());
     }
 
     @Test

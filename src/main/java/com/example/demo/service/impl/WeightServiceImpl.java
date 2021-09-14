@@ -1,8 +1,9 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.entity.SaveWeightEntity;
-import com.example.demo.entity.model.WeightModel;
 import com.example.demo.entity.user.User;
+import com.example.demo.entity.weight.ResponseWeightModel;
+import com.example.demo.entity.weight.SaveWeightEntity;
+import com.example.demo.entity.weight.WeightModel;
 import com.example.demo.exception.user.UserNotFoundException;
 import com.example.demo.exception.weight.WeightEntityNotFound;
 import com.example.demo.repository.WeightRepository;
@@ -12,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.Optional;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -45,19 +46,20 @@ public class WeightServiceImpl implements WeightService {
         return saveWeightEntity;
     }
 
-    public SaveWeightEntity getWeightByUserId(Long id) throws UserNotFoundException, WeightEntityNotFound {
+    public ResponseWeightModel getWeightByUserId(Long id) throws UserNotFoundException, WeightEntityNotFound {
         User user = userService.findById(id);
         if (user == null) {
             log.warn("IN getWeightByUserId user entity with this id {} not found", id);
             throw new UserNotFoundException("user with this id " + id + " not found");
         }
-        Optional<SaveWeightEntity> currentEntity = weightRepository.findByUser(user);
-        if (currentEntity.isEmpty()) {
+        List<SaveWeightEntity> listCurrentEntity = weightRepository.findAllByUser(user);
+        if (listCurrentEntity.isEmpty()) {
             log.warn("IN getWeightByUserId weight entity with this id {} not found", id);
             throw new WeightEntityNotFound("user with this id " + id + " not found");
         }
+        SaveWeightEntity saveWeightEntity = listCurrentEntity.get(listCurrentEntity.size() - 1);
         log.info("IN getWeightByUserId weight entity successfully found by id: {}", id);
-        return currentEntity.get();
+        return new ResponseWeightModel(saveWeightEntity.getCurrentWeight(), saveWeightEntity.getNewWeight(), saveWeightEntity.getFirstCalc(), saveWeightEntity.getDifference(), saveWeightEntity.getBmi());
     }
 
     public SaveWeightEntity updateWeightEntity(WeightModel weightModel, Long id) throws WeightEntityNotFound {

@@ -112,12 +112,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findById(Long id) throws UserNotFoundException {
-        User result = userRepository.findById(id).orElse(null);
-
-        if (result == null) {
+        User result = userRepository.findById(id).orElseThrow(() -> {
             log.warn("IN findById no user found by id: {}", id);
-            throw new UserNotFoundException("user with id:" + id + " not found");
-        }
+            return new UserNotFoundException("user with id:" + id + " not found");
+        });
 
         if (result.getStatus() == Status.INACTIVE) {
             log.warn("IN findByLogin user was deleted by id: {}", id);
