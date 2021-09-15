@@ -83,9 +83,6 @@ public class UserServiceTest {
 
     @Test
     void getAllTest() throws Exception {
-        List<ResponseUserAdmin> all = userService.getAll();
-        assertThat(all.size()).isEqualTo(0);
-
         Long id = 1L;
 
         User user = new User(id, "test", "testtest");
@@ -98,7 +95,7 @@ public class UserServiceTest {
 
         userService.registration(user);
 
-        all = userService.getAll();
+        List<ResponseUserAdmin> all = userService.getAll();
         assertThat(all.size()).isEqualTo(1);
     }
 
