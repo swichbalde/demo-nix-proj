@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.RecipeEntity;
+import com.example.demo.entity.model.ResponseUserAdmin;
 import com.example.demo.entity.model.UserLoginModel;
 import com.example.demo.entity.model.UserModel;
 import com.example.demo.entity.user.User;
@@ -15,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,15 +63,13 @@ public class AdminController {
 
     @GetMapping("/users/all")
     public ResponseEntity getAllUsers() {
-        List<User> all = userService.getAll();
-        List<UserModel> allUsers = new ArrayList<>();
-        for (User user : all) {
-            allUsers.add(UserModel.fromUser(user));
+        List<ResponseUserAdmin> responseUserAdmins;
+        try {
+            responseUserAdmins = userService.getAll();
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
-        if (allUsers.size() == 0) {
-            return ResponseEntity.badRequest().body("No users has found");
-        }
-        return ResponseEntity.ok(allUsers);
+        return ResponseEntity.ok(responseUserAdmins);
     }
 
     @PostMapping("/registration")

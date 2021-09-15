@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.entity.model.ResponseUserAdmin;
 import com.example.demo.entity.user.Role;
 import com.example.demo.entity.user.Status;
 import com.example.demo.entity.user.User;
@@ -82,7 +83,7 @@ public class UserServiceTest {
 
     @Test
     void getAllTest() throws Exception {
-        List<User> all = userService.getAll();
+        List<ResponseUserAdmin> all = userService.getAll();
         assertThat(all.size()).isEqualTo(0);
 
         Long id = 1L;

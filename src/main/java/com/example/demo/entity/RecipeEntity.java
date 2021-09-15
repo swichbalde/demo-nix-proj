@@ -26,13 +26,8 @@ public class RecipeEntity {
     @NotBlank
     private String ingredients;
 
-    @NotBlank
     private Integer cookTime;
-
-    @NotBlank
     private Integer calories;
-
-    @NotBlank
     private Integer cost;
 
     public RecipeEntity(Long id, String recipeName, String ingredients, Integer cookTime, Integer calories, Integer cost) {

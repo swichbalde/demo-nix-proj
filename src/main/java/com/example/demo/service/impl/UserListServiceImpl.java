@@ -1,5 +1,6 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.entity.userlist.RequestUserListEntity;
 import com.example.demo.entity.userlist.UserListEntity;
 import com.example.demo.entity.user.User;
 import com.example.demo.exception.list.RecommendAndBanListException;
@@ -12,6 +13,7 @@ import com.example.demo.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -45,12 +47,17 @@ public class UserListServiceImpl implements UserListService {
         return userList;
     }
 
-    public UserListEntity getUserListById(Long id) throws UserListNotFoundException {
-        Optional<UserListEntity> tmpUserList = userListRepository.findById(id);
-        return tmpUserList.orElseThrow(() -> {
-            log.warn("IN getUserListById user list not found by this id : {}", id);
-            return new UserListNotFoundException("user list not found by this id : " + id);
-        });
+    public RequestUserListEntity getUserListById(Long id) throws UserListNotFoundException, UserNotFoundException {
+        List<UserListEntity> userListEntityList = userListRepository.findAllByUser(userService.findById(id));
+        if (userListEntityList.isEmpty()) {
+            log.warn("IN getUserListById cannot found userList by user id: {}", id);
+            throw new UserListNotFoundException("cannot found userList by user id: " + id);
+        }
+
+        log.info("IN getUserListById size of list {} elements: {}",userListEntityList.size(), userListEntityList);
+        UserListEntity userListEntity = userListEntityList.get(userListEntityList.size() - 1);
+
+        return new RequestUserListEntity(userListEntity.getRecommendList(), userListEntity.getBanList(), userListEntity.getFilter());
     }
 
     public void updateUserListById(Long id, UserListEntity userListEntity) throws UserListNotFoundException, RecommendListIsBlankException {
@@ -65,14 +72,9 @@ public class UserListServiceImpl implements UserListService {
             throw new RecommendListIsBlankException("Recommend list cannot be blank");
         }
 
-        if (!userListEntity.getRecommendList().isBlank())
-            currentEntity.setRecommendList(userListEntity.getRecommendList());
-
-        if (!userListEntity.getBanList().isBlank())
-            currentEntity.setBanList(userListEntity.getBanList());
-
-        if (!userListEntity.getFilter().isBlank())
-            currentEntity.setFilter(userListEntity.getFilter());
+        currentEntity.setRecommendList(userListEntity.getRecommendList());
+        currentEntity.setBanList(userListEntity.getBanList());
+        currentEntity.setFilter(userListEntity.getFilter());
 
         userListRepository.save(currentEntity);
     }

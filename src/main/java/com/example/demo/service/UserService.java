@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.entity.model.ResponseUserAdmin;
 import com.example.demo.entity.user.User;
 import com.example.demo.exception.user.DuplicateUserLogin;
 import com.example.demo.exception.user.UserNotFoundException;
@@ -13,7 +14,7 @@ public interface UserService {
 
     User registrationAdmin(User user) throws DuplicateUserLogin, UserPasswordSmall;
 
-    List<User> getAll();
+    List<ResponseUserAdmin> getAll() throws UserNotFoundException;
 
     User findByLogin(String login) throws UserNotFoundException;
 

@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.entity.userlist.RequestUserListEntity;
 import com.example.demo.entity.userlist.UserListEntity;
 import com.example.demo.exception.list.RecommendAndBanListException;
 import com.example.demo.exception.list.RecommendListIsBlankException;
@@ -10,7 +11,7 @@ public interface UserListService {
     UserListEntity saveUserList(UserListEntity userList, Long userId) throws RecommendListIsBlankException,
             RecommendAndBanListException, UserNotFoundException;
 
-    UserListEntity getUserListById(Long id) throws UserListNotFoundException;
+    RequestUserListEntity getUserListById(Long id) throws UserListNotFoundException, UserNotFoundException;
 
     void updateUserListById(Long id, UserListEntity userListEntity) throws UserListNotFoundException, RecommendListIsBlankException;
 }

@@ -56,8 +56,8 @@ public class RecipeServiceImpl implements RecipeService {
         return save;
     }
 
-    public List<RecipeEntity> getRecipeByIngredients(String userId) throws RecipeNotFoundException, UserNotFoundException, UserListNotFoundException {
-        List<UserListEntity> userListEntityList = userListRepository.findAllByUser(userService.findById(Long.valueOf(userId)));
+    public List<RecipeEntity> getRecipeByIngredients(Long userId) throws RecipeNotFoundException, UserNotFoundException, UserListNotFoundException {
+        List<UserListEntity> userListEntityList = userListRepository.findAllByUser(userService.findById(userId));
         if (userListEntityList.isEmpty()) {
             log.warn("IN getRecipeByIngredients cannot found userList by user id: {}", userId);
             throw new UserListNotFoundException("cannot found userList by user id: " + userId);

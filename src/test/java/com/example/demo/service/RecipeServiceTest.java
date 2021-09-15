@@ -94,7 +94,7 @@ public class RecipeServiceTest {
         when(userListRepository.save(userListEntity)).thenReturn(userListEntity);
 
         assertThatExceptionOfType(RecipeNotFoundException.class)
-                .isThrownBy(() -> recipeService.getRecipeByIngredients(String.valueOf(id)));
+                .isThrownBy(() -> recipeService.getRecipeByIngredients(id));
 
         verify(userListRepository).findAllByUser(userService.findById(id));
     }

@@ -14,7 +14,14 @@ public class RequestUserListEntity {
     private String banList;
     private String filter;
 
+    public RequestUserListEntity() {
+    }
 
+    public RequestUserListEntity(String recommendList, String banList, String filter) {
+        this.recommendList = recommendList;
+        this.banList = banList;
+        this.filter = filter;
+    }
 
     public UserListEntity toUserList(RequestUserListEntity requestUserListEntity) throws UserNotFoundException {
         UserListEntity userListEntity = new UserListEntity();

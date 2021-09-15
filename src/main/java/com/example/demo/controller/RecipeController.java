@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.exception.list.RecipeListIsBlankException;
 import com.example.demo.exception.list.UserListNotFoundException;
 import com.example.demo.exception.recipe.RecipeNotFoundException;
+import com.example.demo.exception.user.UserNotFoundException;
 import com.example.demo.service.impl.RecipeServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,10 +33,10 @@ public class RecipeController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity getRecipeByIdWithFilters(@PathVariable String id) {
+    public ResponseEntity getRecipeByIdWithFilters(@PathVariable Long id) {
         try {
             return ResponseEntity.ok(recipeService.getRecipeByIngredients(id));
-        } catch (UserListNotFoundException e) {
+        } catch (UserListNotFoundException | UserNotFoundException | RecipeNotFoundException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception ex) {
             return ResponseEntity.badRequest().body("Unknown error");

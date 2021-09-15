@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.entity.userlist.RequestUserListEntity;
 import com.example.demo.entity.userlist.UserListEntity;
 import com.example.demo.exception.list.UserListNotFoundException;
 import com.example.demo.repository.UserListRepository;
@@ -7,6 +8,7 @@ import com.example.demo.service.impl.UserListServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -38,21 +40,17 @@ public class UserListServiceTest {
         userList.setBanList("bbb");
 
         when(userListRepository.findById(absentId)).thenReturn(Optional.empty());
-        when(userListRepository.findById(presentId)).thenReturn(Optional.of(userList));
 
         assertThatExceptionOfType(UserListNotFoundException.class)
                 .isThrownBy(() -> userListService.getUserListById(absentId))
-                .satisfies(e -> assertThat(e.getMessage()).isEqualTo("user list not found by this id : " + absentId));
+                .satisfies(e -> assertThat(e.getMessage()).isEqualTo("cannot found userList by user id: " + absentId));
 
-        UserListEntity userListEntityPrs = userListService.getUserListById(presentId);
-        assertThat(userListEntityPrs).isEqualTo(userList);
+        when(userListRepository.findAllByUser(userService.findById(presentId))).thenReturn(List.of(userList));
 
-        verify(userListRepository).findById(absentId);
-
-
-        verify(userListRepository).findById(presentId);
-
-        verifyNoMoreInteractions(userListRepository);
+        RequestUserListEntity userListEntityPrs = userListService.getUserListById(presentId);
+        assertThat(userListEntityPrs.getRecommendList()).isEqualTo(userList.getRecommendList());
+        assertThat(userListEntityPrs.getBanList()).isEqualTo(userList.getBanList());
+        assertThat(userListEntityPrs.getFilter()).isEqualTo(userList.getFilter());
     }
 
     @Test

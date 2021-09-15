@@ -34,7 +34,7 @@ public class UserListController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity updateUserList(@PathVariable Long id, @RequestBody RequestUserListEntity requestUserListEntity) {
+    public ResponseEntity updateUserListById(@PathVariable Long id, @RequestBody RequestUserListEntity requestUserListEntity) {
         try {
             UserListEntity userListEntity = requestUserListEntity.toUserList(requestUserListEntity);
             userListService.updateUserListById(id, userListEntity);
@@ -47,10 +47,10 @@ public class UserListController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity getOneUserList(@PathVariable String id) {
+    public ResponseEntity getUserListByUserId(@PathVariable Long id) {
         try {
-            return ResponseEntity.ok(userListService.getUserListById(Long.valueOf(id)));
-        }catch (UserListNotFoundException ex) {
+            return ResponseEntity.ok(userListService.getUserListById(id));
+        }catch (UserListNotFoundException | UserNotFoundException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Unknown error");

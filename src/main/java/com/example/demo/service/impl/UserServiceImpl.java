@@ -1,5 +1,6 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.entity.model.ResponseUserAdmin;
 import com.example.demo.entity.user.Role;
 import com.example.demo.entity.user.Status;
 import com.example.demo.entity.user.User;
@@ -17,6 +18,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -89,10 +91,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getAll() {
+    public List<ResponseUserAdmin> getAll() throws UserNotFoundException {
         List<User> userList = userRepository.findAll();
-        log.info("IN getAll: {} users found", userList.size());
-        return userList;
+        List<ResponseUserAdmin> responseUserAdmins = userList.stream().map(
+                el -> new ResponseUserAdmin(el.getId(), el.getLogin(), el.getCreated(), el.getStatus()))
+                .collect(Collectors.toList()
+        );
+        if (responseUserAdmins.isEmpty()) {
+            throw new UserNotFoundException("Users not found");
+        }
+        log.info("IN getAll: {} users found", responseUserAdmins.size());
+        return responseUserAdmins;
     }
 
     @Override
