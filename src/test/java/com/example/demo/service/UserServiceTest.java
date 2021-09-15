@@ -84,7 +84,6 @@ public class UserServiceTest {
     @Test
     void getAllTest() throws Exception {
         Long id = 1L;
-
         User user = new User(id, "test", "testtest");
         Role role = new Role();
         role.setName("ROLE_USER");
