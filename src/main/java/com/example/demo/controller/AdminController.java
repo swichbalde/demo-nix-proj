@@ -16,9 +16,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
+import static com.example.demo.controller.AuthController.getResponseEntity;
 
 @RestController
 @RequestMapping("/admin")
@@ -87,13 +87,7 @@ public class AdminController {
             return ResponseEntity.badRequest().body("Unknown error");
         }
 
-        String token = jwtTokenProvider.createToken(username, registrationUser.getRoles());
-
-        Map<String, String> response = new HashMap<>();
-        response.put("username", username);
-        response.put("token", token);
-
-        return ResponseEntity.ok(response);
+        return getResponseEntity(username, registrationUser, jwtTokenProvider, user.getId());
     }
 
     @PostMapping("/recipe")

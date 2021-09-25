@@ -48,9 +48,14 @@ public class AuthController {
             return ResponseEntity.badRequest().body("Unknown error");
         }
 
+        return getResponseEntity(username, user, jwtTokenProvider, user.getId());
+    }
+
+    static ResponseEntity getResponseEntity(String username, User user, JwtTokenProvider jwtTokenProvider, Long id) {
         String token = jwtTokenProvider.createToken(username, user.getRoles());
 
         Map<String, String> response = new HashMap<>();
+        response.put("id", String.valueOf(id));
         response.put("username", username);
         response.put("token", token);
 
@@ -75,6 +80,7 @@ public class AuthController {
         String token = jwtTokenProvider.createToken(username, registrationUser.getRoles());
 
         Map<String, String> response = new HashMap<>();
+        response.put("id", String.valueOf(user.getId()));
         response.put("username", username);
         response.put("token", token);
 

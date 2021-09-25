@@ -124,6 +124,7 @@
 			<version>${open-api.version}</version>
 		</dependency>
 
+		<!--Migration-->
 		<dependency>
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-core</artifactId>
